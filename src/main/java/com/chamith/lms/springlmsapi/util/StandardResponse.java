@@ -1,4 +1,4 @@
-package com.example.vehicle_reservation_project.util;
+package com.chamith.lms.springlmsapi.util;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
