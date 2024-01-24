@@ -21,13 +21,7 @@ public class AdminController {
     @PatchMapping("/update_privilege/{email}")
     public ResponseEntity<StandardResponse> updatePrivilege(@RequestHeader("AuthenticationHeader") String accessToken ,@PathVariable("email") String email){
         if(generateJWT.validateToken(accessToken).isAuthenticationStatus() && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
-            String msg = adminService.updatePrivilege(email);
-            return new ResponseEntity<>(
-                    new StandardResponse(
-                            200,
-                            "Update Privilege",
-                            msg
-                    ), HttpStatus.OK);
+             return  adminService.updatePrivilege(email);
         }else{
             return new ResponseEntity<>(
                     new StandardResponse(
