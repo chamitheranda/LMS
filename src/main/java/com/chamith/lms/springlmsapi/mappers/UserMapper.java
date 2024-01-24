@@ -1,10 +1,7 @@
 package com.chamith.lms.springlmsapi.mappers;
 
 import com.chamith.lms.springlmsapi.dto.requestDTO.UserRequestDTO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
@@ -23,4 +20,10 @@ public interface UserMapper {
 
     @Select("SELECT COUNT(*) > 0 FROM users WHERE email = #{email}")
     boolean doesEmailExist(String email);
+
+    @Delete("DELETE FROM users WHERE email = #{email}")
+    void deleteUserByEmail(String email);
+
+    @Select("SELECT privilege_level FROM users WHERE email=#{email}")
+    String getPrivilegeLevel(String email);
 }
