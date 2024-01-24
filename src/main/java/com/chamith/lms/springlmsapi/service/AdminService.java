@@ -14,16 +14,26 @@ public class AdminService {
     private UserMapper userMapper ;
 
     public ResponseEntity<StandardResponse> updatePrivilege(String email) {
-        if(userMapper.doesEmailExist(email)){
-            userMapper.updatePrivilegeLevel(email);
-            return new ResponseEntity<>(
+        if(userMapper.doesEmailExist(email) ){
+            if(userMapper.getPrivilegeLevel(email).equals("admin")){
+                userMapper.updatePrivilegeLevel(email);
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                200,
+                                "User is a admin",
+                                "Already user is a admin !!!!"
+                        ), HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(
                         new StandardResponse(
                                 200,
                                 "Update Privilege",
                                 "Update successfully !!!!"
                         ), HttpStatus.OK);
+            }
+
         }else {
-            return new ResponseEntity<>(
+                return new ResponseEntity<>(
                         new StandardResponse(
                                 204,
                                 "email not found",
@@ -32,5 +42,33 @@ public class AdminService {
             }
         }
 
+    public ResponseEntity<StandardResponse> deleteUser(String email) {
+        if(userMapper.doesEmailExist(email) ){
+            if( userMapper.getPrivilegeLevel(email).equals("admin")){
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                200,
+                                "User is a admin",
+                                "User cant delete !!!!"
+                        ), HttpStatus.OK);
+            }else {
+                userMapper.deleteUserByEmail(email);
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                200,
+                                "User Delete",
+                                "Delete successfully !!!!"
+                        ), HttpStatus.OK);
+            }
+
+        }else {
+            return new ResponseEntity<>(
+                    new StandardResponse(
+                            204,
+                            "User not found",
+                            "Delete Failed !!!!"
+                    ), HttpStatus.NOT_FOUND);
+        }
     }
+}
 
