@@ -28,13 +28,22 @@ public class ResultService {
                                 "Admin doesn't have results !!!!"
                         ), HttpStatus.OK);
             }else {
-                resultMapper.addResults(resultsRequestDTO);
-                return new ResponseEntity<>(
-                        new StandardResponse(
-                                200,
-                                "Results entered",
-                                "Result enter successfully !!!!"
-                        ), HttpStatus.OK);
+                if(resultMapper.doesSubjectExist(resultsRequestDTO.getSubject())){
+                    resultMapper.addResults(resultsRequestDTO);
+                    return new ResponseEntity<>(
+                            new StandardResponse(
+                                    200,
+                                    "Results entered",
+                                    "Result enter successfully !!!!"
+                            ), HttpStatus.OK);
+                }else {
+                    return new ResponseEntity<>(
+                            new StandardResponse(
+                                    200,
+                                    "Results exists",
+                                    "Result already enter successfully !!!!"
+                            ), HttpStatus.OK);
+                }
             }
 
         }else {
