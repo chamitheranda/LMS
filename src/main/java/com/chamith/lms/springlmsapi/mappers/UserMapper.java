@@ -4,6 +4,7 @@ import com.chamith.lms.springlmsapi.dto.requestDTO.UserRequestDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserMapper {
@@ -13,4 +14,10 @@ public interface UserMapper {
 
     @Select("SELECT password FROM users WHERE email = #{email}")
     String selectPasswordByEmail(String email);
+
+    @Select("SELECT privilege_level FROM users WHERE email = #{email}")
+    String selectPrivilegeLevelByEmail(String email);
+
+    @Update("UPDATE users SET privilege_level = 'admin'  WHERE email = #{email} ")
+    void updatePrivilegeLevel(String email);
 }
