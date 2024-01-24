@@ -32,7 +32,8 @@ public class UserService {
     public SingInCredientials signIn(SignInRequestDTO signInRequestDTO) {
         String storedPassword = userMapper.selectPasswordByEmail(signInRequestDTO.getEmail());
         if(passwordEncoder.matches(signInRequestDTO.getPassword() , storedPassword)){
-            String jwtToken = generateJWT.generateToken(signInRequestDTO.getEmail());
+            String jwtToken = generateJWT.generateToken(signInRequestDTO.getEmail() ,
+                    userMapper.selectPrivilegeLevelByEmail(signInRequestDTO.getEmail()));
             return new SingInCredientials(
                     jwtToken,
                     HttpStatus.OK
