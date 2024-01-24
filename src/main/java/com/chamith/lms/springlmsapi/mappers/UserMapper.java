@@ -20,4 +20,7 @@ public interface UserMapper {
 
     @Update("UPDATE users SET privilege_level = 'admin'  WHERE email = #{email} ")
     void updatePrivilegeLevel(String email);
+
+    @Select("SELECT COUNT(*) > 0 FROM users WHERE email = #{email}")
+    boolean doesEmailExist(String email);
 }
