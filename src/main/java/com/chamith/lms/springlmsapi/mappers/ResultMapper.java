@@ -8,4 +8,7 @@ public interface ResultMapper {
 
     @Insert("insert into results(student_name, email, subject , results) values(#{student_name}, #{email}, #{subject},#{results})")
     void addResults(ResultsRequestDTO resultsRequestDTO);
+
+    @Select("SELECT COUNT(*) > 0 FROM results WHERE subject = #{subject}")
+    boolean doesSubjectExist(String subject);
 }
