@@ -16,7 +16,6 @@ public class AdminService {
     public ResponseEntity<StandardResponse> updatePrivilege(String email) {
         if(userMapper.doesEmailExist(email) ){
             if(userMapper.getPrivilegeLevel(email).equals("admin")){
-                userMapper.updatePrivilegeLevel(email);
                 return new ResponseEntity<>(
                         new StandardResponse(
                                 200,
@@ -24,6 +23,7 @@ public class AdminService {
                                 "Already user is a admin !!!!"
                         ), HttpStatus.OK);
             }else {
+                userMapper.updatePrivilegeLevel(email);
                 return new ResponseEntity<>(
                         new StandardResponse(
                                 200,
