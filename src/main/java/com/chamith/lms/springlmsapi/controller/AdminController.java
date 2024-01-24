@@ -31,4 +31,20 @@ public class AdminController {
                     ), HttpStatus.FORBIDDEN);
         }
     }
+
+    @DeleteMapping("/delete_user/{email}")
+    public ResponseEntity<StandardResponse> removeUser(@RequestHeader("AuthenticationHeader") String accessToken ,@PathVariable("email") String email ){
+        if(generateJWT.validateToken(accessToken).isAuthenticationStatus() && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
+            return  adminService.deleteUser(email);
+        }else{
+            return new ResponseEntity<>(
+                    new StandardResponse(
+                            403,
+                            "User hasn't access",
+                            "Access denied !!!!"
+                    ), HttpStatus.FORBIDDEN);
+        }
+
+    }
+
 }
