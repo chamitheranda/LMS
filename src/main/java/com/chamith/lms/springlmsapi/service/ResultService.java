@@ -28,7 +28,7 @@ public class ResultService {
                                 "Admin doesn't have results !!!!"
                         ), HttpStatus.OK);
             }else {
-                if(resultMapper.doesSubjectExist(resultsRequestDTO.getSubject())){
+                if(!resultMapper.doesSubjectExist(resultsRequestDTO.getSubject())){
                     resultMapper.addResults(resultsRequestDTO);
                     return new ResponseEntity<>(
                             new StandardResponse(
@@ -41,7 +41,7 @@ public class ResultService {
                             new StandardResponse(
                                     200,
                                     "Results exists",
-                                    "Result already enter successfully !!!!"
+                                    "Result already entered  !!!!"
                             ), HttpStatus.OK);
                 }
             }
