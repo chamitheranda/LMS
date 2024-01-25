@@ -18,10 +18,10 @@ public class AdminService {
             if(userMapper.getPrivilegeLevel(email).equals("admin")){
                 return new ResponseEntity<>(
                         new StandardResponse(
-                                200,
+                                417,
                                 "User is a admin",
                                 "Already user is a admin !!!!"
-                        ), HttpStatus.OK);
+                        ), HttpStatus.EXPECTATION_FAILED);
             }else {
                 userMapper.updatePrivilegeLevel(email);
                 return new ResponseEntity<>(
@@ -49,7 +49,7 @@ public class AdminService {
                         new StandardResponse(
                                 200,
                                 "User is a admin",
-                                "User cant delete !!!!"
+                                "User can't delete !!!!"
                         ), HttpStatus.OK);
             }else {
                 userMapper.deleteUserByEmail(email);
