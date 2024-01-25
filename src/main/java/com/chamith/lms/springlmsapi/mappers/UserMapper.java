@@ -2,7 +2,10 @@ package com.chamith.lms.springlmsapi.mappers;
 
 import com.chamith.lms.springlmsapi.dto.requestDTO.EnrollRequestDTO;
 import com.chamith.lms.springlmsapi.dto.requestDTO.UserRequestDTO;
+import com.chamith.lms.springlmsapi.dto.responseDTO.ViewResultsResponseDTO;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -28,10 +31,18 @@ public interface UserMapper {
     @Select("SELECT privilege_level FROM users WHERE email=#{email}")
     String getPrivilegeLevel(String email);
 
-    @Select("SELECT COUNT(*) > 0 FROM enrolled_users WHERE email = #{email} AND subject = #{subject}")
+    @Select("SELECT COUNT(*) > 0 FROM enrolled_courses WHERE email = #{email} AND subject = #{subject}")
     boolean doesSubjectExist(String email ,  String subject);
 
-    @Insert("insert into enrolled_users(subject, email) values(#{subject}, #{email})")
+    @Insert("insert into enrolled_courses(subject, email) values(#{subject}, #{email})")
     void addCourse(EnrollRequestDTO enrollRequestDTO);
+
+    @Select("SELECT subject, results FROM results WHERE email=#{email}")
+    @Results({
+            @Result(property = "subject", column = "subject"),
+            @Result(property = "results", column = "results")
+    })
+    List<ViewResultsResponseDTO> getAllResults(String email);
+
 
 }
