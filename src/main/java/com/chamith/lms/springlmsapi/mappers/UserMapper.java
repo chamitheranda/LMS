@@ -1,5 +1,6 @@
 package com.chamith.lms.springlmsapi.mappers;
 
+import com.chamith.lms.springlmsapi.dto.requestDTO.EnrollRequestDTO;
 import com.chamith.lms.springlmsapi.dto.requestDTO.UserRequestDTO;
 import org.apache.ibatis.annotations.*;
 
@@ -26,4 +27,11 @@ public interface UserMapper {
 
     @Select("SELECT privilege_level FROM users WHERE email=#{email}")
     String getPrivilegeLevel(String email);
+
+    @Select("SELECT COUNT(*) > 0 FROM enrolled_users WHERE email = #{email} AND subject = #{subject}")
+    boolean doesSubjectExist(String email ,  String subject);
+
+    @Insert("insert into enrolled_users(subject, email) values(#{subject}, #{email})")
+    void addCourse(EnrollRequestDTO enrollRequestDTO);
+
 }
