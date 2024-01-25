@@ -20,8 +20,10 @@ public class ResultsController {
     private ResultService resultService ;
 
     @PostMapping("/add_results")
-    public ResponseEntity<StandardResponse> addResult(@RequestHeader("AuthenticationHeader") String accessToken , @RequestBody ResultsRequestDTO resultsRequestDTO){
-        if(generateJWT.validateToken(accessToken).isAuthenticationStatus() && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
+    public ResponseEntity<StandardResponse> addResult(@RequestHeader("AuthenticationHeader") String accessToken ,
+                                                      @RequestBody ResultsRequestDTO resultsRequestDTO){
+        if(generateJWT.validateToken(accessToken).isAuthenticationStatus()
+                && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
             return  resultService.addResult(resultsRequestDTO);
         }else{
             return new ResponseEntity<>(
@@ -30,6 +32,23 @@ public class ResultsController {
                             "User hasn't access",
                             "Access denied !!!!"
                     ), HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+
+    @PostMapping("/view_results/{email}")
+    public ResponseEntity<StandardResponse> viewResults(@RequestHeader("AuthenticationHeader") String accessToken ,
+                                                        @PathVariable("email") String email ){
+        if(generateJWT.validateToken(accessToken).isAuthenticationStatus()){
+            return  resultService.viewResults(email);
+        }else{
+            return new ResponseEntity<>(
+                    new StandardResponse(
+                            401,
+                            "Unauthorized Access",
+                            "Sign in failed !!!!"
+                    ), HttpStatus.UNAUTHORIZED);
         }
 
     }
