@@ -23,26 +23,35 @@ public class ResultService {
             if(userMapper.getPrivilegeLevel(resultsRequestDTO.getEmail()).equals("admin")){
                 return new ResponseEntity<>(
                         new StandardResponse(
-                                200,
+                                417,
                                 "User is a admin",
                                 "Admin doesn't have results !!!!"
-                        ), HttpStatus.OK);
+                        ), HttpStatus.EXPECTATION_FAILED);
             }else {
                 if(!resultMapper.doesSubjectExist(resultsRequestDTO.getSubject())){
-                    resultMapper.addResults(resultsRequestDTO);
-                    return new ResponseEntity<>(
-                            new StandardResponse(
-                                    200,
-                                    "Results entered",
-                                    "Result enter successfully !!!!"
-                            ), HttpStatus.OK);
+                   if(userMapper.doesSubjectExist(resultsRequestDTO.getSubject() , resultsRequestDTO.getEmail())){
+                       resultMapper.addResults(resultsRequestDTO);
+                       return new ResponseEntity<>(
+                               new StandardResponse(
+                                       200,
+                                       "Results entered",
+                                       "Result enter successfully !!!!"
+                               ), HttpStatus.OK);
+                   }else {
+                       return new ResponseEntity<>(
+                               new StandardResponse(
+                                       417,
+                                       "User is not enrolled course = "+resultsRequestDTO.getSubject(),
+                                       "Result adding failed !!!!"
+                               ), HttpStatus.EXPECTATION_FAILED);
+                   }
                 }else {
                     return new ResponseEntity<>(
                             new StandardResponse(
-                                    200,
+                                    208,
                                     "Results exists",
                                     "Result already entered  !!!!"
-                            ), HttpStatus.OK);
+                            ), HttpStatus.ALREADY_REPORTED);
                 }
             }
 
