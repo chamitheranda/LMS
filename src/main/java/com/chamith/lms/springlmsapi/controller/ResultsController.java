@@ -20,7 +20,7 @@ public class ResultsController {
     private ResultService resultService ;
 
     @PostMapping("/add_results")
-    public ResponseEntity<StandardResponse> removeUser(@RequestHeader("AuthenticationHeader") String accessToken , @RequestBody ResultsRequestDTO resultsRequestDTO){
+    public ResponseEntity<StandardResponse> addResult(@RequestHeader("AuthenticationHeader") String accessToken , @RequestBody ResultsRequestDTO resultsRequestDTO){
         if(generateJWT.validateToken(accessToken).isAuthenticationStatus() && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
             return  resultService.addResult(resultsRequestDTO);
         }else{
