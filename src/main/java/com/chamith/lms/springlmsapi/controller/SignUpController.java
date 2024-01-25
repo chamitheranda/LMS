@@ -48,7 +48,7 @@ class SignUpController {
                     new StandardResponse(
                             401,
                             "Unauthorized Access",
-                            "Sign in failed !!!!"
+                            singInCredientials.getHttpStatus()
                     ), HttpStatus.UNAUTHORIZED);
         }
 
@@ -58,6 +58,21 @@ class SignUpController {
     public ResponseEntity<StandardResponse> enrollCourses(@RequestHeader("AuthenticationHeader") String accessToken , @RequestBody EnrollRequestDTO enrollRequestDTO ){
         if(generateJWT.validateToken(accessToken).isAuthenticationStatus()){
             return  userService.enroll(enrollRequestDTO);
+        }else{
+            return new ResponseEntity<>(
+                    new StandardResponse(
+                            401,
+                            "Unauthorized Access",
+                            "Sign in failed !!!!"
+                    ), HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @PostMapping("/view_results/{email}")
+    public ResponseEntity<StandardResponse> viewResults(@RequestHeader("AuthenticationHeader") String accessToken , @PathVariable("email") String email ){
+        if(generateJWT.validateToken(accessToken).isAuthenticationStatus()){
+            return  userService.viewResults(email);
         }else{
             return new ResponseEntity<>(
                     new StandardResponse(
