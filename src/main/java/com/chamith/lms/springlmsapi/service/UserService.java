@@ -21,36 +21,9 @@ public class UserService {
     @Autowired
     private UserMapper userMapper ;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder ;
-
-    @Autowired
-    private GenerateJWT generateJWT  ;
-
-    public String addUser(UserRequestDTO userReqestDTO) {
-        String encryptedPassword = passwordEncoder.encode(userReqestDTO.getPassword());
-        userReqestDTO.setPassword(encryptedPassword);
-        userMapper.insert(userReqestDTO);
-
-        return "User details registered";
-    }
-
-    public SingInCredientials signIn(SignInRequestDTO signInRequestDTO) {
-        String storedPassword = userMapper.selectPasswordByEmail(signInRequestDTO.getEmail());
-        if(passwordEncoder.matches(signInRequestDTO.getPassword() , storedPassword)){
-            String jwtToken = generateJWT.generateToken(signInRequestDTO.getEmail() ,
-            userMapper.selectPrivilegeLevelByEmail(signInRequestDTO.getEmail()));
-            return new SingInCredientials(
-                    jwtToken,
-                    HttpStatus.OK
-                    ) ;
-        }else{
-            return new SingInCredientials(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
     public ResponseEntity<StandardResponse> enroll(EnrollRequestDTO enrollRequestDTO) {
-        if(userMapper.doesSubjectExist(enrollRequestDTO.getEmail() , enrollRequestDTO.getSubject()) && userMapper.doesEmailExist(enrollRequestDTO.getEmail())){
+        if(userMapper.doesSubjectExist(enrollRequestDTO.getEmail() , enrollRequestDTO.getSubject())
+                && userMapper.doesEmailExist(enrollRequestDTO.getEmail())){
             return new ResponseEntity<>(
                     new StandardResponse(
                             417,
@@ -68,22 +41,4 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<StandardResponse> viewResults(String email) {
-        if(userMapper.doesEmailExist(email)){
-            List<ViewResultsResponseDTO > resultSet = userMapper.getAllResults(email);
-            return new ResponseEntity<>(
-                    new StandardResponse(
-                            200,
-                            "This is the results ",
-                            resultSet
-                    ), HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(
-                    new StandardResponse(
-                            204,
-                            "No Results for = " + email ,
-                            "Results Not Found  !!!!"
-                    ), HttpStatus.NOT_FOUND);
-        }
-    }
 }
