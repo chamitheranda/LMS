@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService ;
+    private UserService userService;
 
     @Autowired
     private GenerateJWT generateJWT ;

@@ -17,7 +17,7 @@ public class ResultsController {
     private GenerateJWT generateJWT ;
 
     @Autowired
-    private ResultService resultService ;
+    private ResultService resultService;
 
     @PostMapping("/add_results")
     public ResponseEntity<StandardResponse> addResult(@RequestHeader("AuthenticationHeader") String accessToken ,

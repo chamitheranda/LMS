@@ -3,8 +3,6 @@ package com.chamith.lms.springlmsapi.controller;
 import com.chamith.lms.springlmsapi.dto.requestDTO.SignInRequestDTO;
 import com.chamith.lms.springlmsapi.dto.requestDTO.UserRequestDTO;
 import com.chamith.lms.springlmsapi.service.AuthService;
-import com.chamith.lms.springlmsapi.service.UserService;
-import com.chamith.lms.springlmsapi.util.GenerateJWT;
 import com.chamith.lms.springlmsapi.util.SingInCredientials;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private GenerateJWT generateJWT ;
-
-    @Autowired
-    private AuthService authService ;
+    private AuthService authService;
 
     @PostMapping("/signUp")
     public ResponseEntity<StandardResponse> signUp(@RequestBody UserRequestDTO userReqestDTO){
