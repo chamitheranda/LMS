@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestUpdatePrivilegeSuccess {
+public class TestUpdatePrivilege {
 
     @Mock
     private GenerateJWT generateJWT;
