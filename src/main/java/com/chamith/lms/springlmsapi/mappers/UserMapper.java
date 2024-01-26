@@ -22,11 +22,14 @@ public interface UserMapper {
     @Update("UPDATE users SET privilege_level = 'admin'  WHERE email = #{email} ")
     void updatePrivilegeLevel(String email);
 
+    @Update("UPDATE results SET results = #{result}  WHERE email = #{email} ")
+    void updateResult(String result);
+
     @Select("SELECT COUNT(*) > 0 FROM users WHERE email = #{email}")
     boolean doesEmailExist(String email);
 
     @Delete("DELETE FROM users WHERE email = #{email}")
-    void deleteUserByEmail(String email);
+    void deleteUserByEmailFromUsers(String email);
 
     @Select("SELECT privilege_level FROM users WHERE email=#{email}")
     String getPrivilegeLevel(String email);
@@ -35,7 +38,7 @@ public interface UserMapper {
     boolean doesSubjectExist(String email ,  String subject);
 
     @Insert("insert into enrolled_courses(subject, email) values(#{subject}, #{email})")
-    void addCourse(EnrollRequestDTO enrollRequestDTO);
+    void addCourse(String subject ,  String email );
 
     @Select("SELECT subject, results FROM results WHERE email=#{email}")
     @Results({

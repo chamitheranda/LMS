@@ -11,4 +11,10 @@ public interface ResultMapper {
 
     @Select("SELECT COUNT(*) > 0 FROM results WHERE subject = #{subject}")
     boolean doesSubjectExist(String subject);
+
+    @Select("SELECT COUNT(*) > 0 FROM results WHERE email = #{email}")
+    boolean doesResultsExist(String email);
+
+    @Delete("DELETE FROM results WHERE email = #{email}")
+    void deleteUserFromResults(String email);
 }
