@@ -27,6 +27,18 @@ public class GenerateJWT {
         return token;
     }
 
+    public String extractSubject(String jwtToken) {
+        try {
+            Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken);
+            String subject = claimsJws.getBody().getSubject();
+            return subject;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public AuthenticationVerification validateToken(String token) {
         try {
             Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
