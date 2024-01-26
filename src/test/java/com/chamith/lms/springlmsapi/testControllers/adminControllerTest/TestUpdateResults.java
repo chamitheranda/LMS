@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestUpdateUser {
+public class TestUpdateResults {
     @Mock
     private GenerateJWT generateJWT;
 
