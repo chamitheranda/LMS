@@ -21,32 +21,50 @@ public class AdminController {
     @PatchMapping("/update_privilege/{email}")
     public ResponseEntity<StandardResponse> updatePrivilege(@RequestHeader("AuthenticationHeader") String accessToken ,
                                                             @PathVariable("email") String email){
-        if(generateJWT.validateToken(accessToken).isAuthenticationStatus()
-                && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
-             return  adminService.updatePrivilege(email);
-        }else{
+        if (generateJWT.validateToken(accessToken).isAuthenticationStatus()) {
+            if (generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")) {
+                return adminService.updatePrivilege(email);
+            } else {
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                403,
+                                "User hasn't access | User is not a admin ",
+                                "Access denied !!!!"
+                        ), HttpStatus.FORBIDDEN);
+            }
+
+        } else {
             return new ResponseEntity<>(
                     new StandardResponse(
-                            403,
-                            "User hasn't access",
-                            "Access denied !!!!"
-                    ), HttpStatus.FORBIDDEN);
+                            401,
+                            "Unauthorized Access",
+                            "Sign in failed !!!!"
+                    ), HttpStatus.UNAUTHORIZED);
         }
     }
 
     @DeleteMapping("/delete_user/{email}")
-    public ResponseEntity<StandardResponse> removeUser(@RequestHeader("AuthenticationHeader") String accessToken ,@PathVariable("email") String email ){
-        if(generateJWT.validateToken(accessToken).isAuthenticationStatus() && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
-            return  adminService.deleteUser(email);
-        }else{
+    public ResponseEntity<StandardResponse> removeUser(@RequestHeader("AuthenticationHeader") String accessToken ,
+                                                       @PathVariable("email") String email ) {
+        if (generateJWT.validateToken(accessToken).isAuthenticationStatus()) {
+            if (generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")) {
+                return adminService.deleteUser(email);
+            } else {
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                403,
+                                "User hasn't access | User is not a admin ",
+                                "Access denied !!!!"
+                        ), HttpStatus.FORBIDDEN);
+            }
+
+        } else {
             return new ResponseEntity<>(
                     new StandardResponse(
-                            403,
-                            "User hasn't access",
-                            "Access denied !!!!"
-                    ), HttpStatus.FORBIDDEN);
+                            401,
+                            "Unauthorized Access",
+                            "Sign in failed !!!!"
+                    ), HttpStatus.UNAUTHORIZED);
         }
-
     }
-
 }
