@@ -101,5 +101,34 @@ public class AdminService {
                     ), HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<StandardResponse> updateResults(String email , String result) {
+        if(userMapper.doesEmailExist(email) ){
+            if(userMapper.getPrivilegeLevel(email).equals("admin")){
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                417,
+                                "User is a admin",
+                                "Already user is a admin !!!!"
+                        ), HttpStatus.EXPECTATION_FAILED);
+            }else {
+                userMapper.updateResult(result);
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                200,
+                                "Update Results",
+                                "Result Update successfully !!!!"
+                        ), HttpStatus.OK);
+            }
+
+        }else {
+            return new ResponseEntity<>(
+                    new StandardResponse(
+                            204,
+                            "email not found",
+                            "update failed !!!!"
+                    ), HttpStatus.NOT_FOUND);
+        }
+    }
 }
 

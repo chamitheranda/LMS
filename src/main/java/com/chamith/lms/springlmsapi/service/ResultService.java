@@ -4,6 +4,7 @@ import com.chamith.lms.springlmsapi.dto.requestDTO.ResultsRequestDTO;
 import com.chamith.lms.springlmsapi.dto.responseDTO.ViewResultsResponseDTO;
 import com.chamith.lms.springlmsapi.mappers.ResultMapper;
 import com.chamith.lms.springlmsapi.mappers.UserMapper;
+import com.chamith.lms.springlmsapi.util.GenerateJWT;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,12 @@ public class ResultService {
     @Autowired
     private UserMapper userMapper ;
 
-    public ResponseEntity<StandardResponse> addResult(ResultsRequestDTO resultsRequestDTO) {
-        if(userMapper.doesEmailExist(resultsRequestDTO.getEmail()) ){
-            if(userMapper.getPrivilegeLevel(resultsRequestDTO.getEmail()).equals("admin")){
+    @Autowired
+    private GenerateJWT generateJWT ;
+
+    public ResponseEntity<StandardResponse> addResult(ResultsRequestDTO resultsRequestDTO, String email) {
+        if(userMapper.doesEmailExist(email) ){
+            if(userMapper.getPrivilegeLevel(email).equals("admin")){
                 return new ResponseEntity<>(
                         new StandardResponse(
                                 417,
@@ -32,7 +36,7 @@ public class ResultService {
                         ), HttpStatus.EXPECTATION_FAILED);
             }else {
                 if(!resultMapper.doesSubjectExist(resultsRequestDTO.getSubject())){
-                   if(userMapper.doesSubjectExist(resultsRequestDTO.getSubject() , resultsRequestDTO.getEmail())){
+                   if(userMapper.doesSubjectExist(resultsRequestDTO.getSubject() , email)){
                        resultMapper.addResults(resultsRequestDTO);
                        return new ResponseEntity<>(
                                new StandardResponse(
