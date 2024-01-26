@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestUpdatePrivilegeSuccess {
+public class TestUpdatePrivilege {
 
     @InjectMocks
     private AdminServiceImpl adminServiceImpl;
