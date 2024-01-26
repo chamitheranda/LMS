@@ -23,7 +23,8 @@ public class UserController {
     public ResponseEntity<StandardResponse> enrollCourses(@RequestHeader("AuthenticationHeader") String accessToken ,
                                                           @RequestBody EnrollRequestDTO enrollRequestDTO ){
         if(generateJWT.validateToken(accessToken).isAuthenticationStatus()){
-            return  userService.enroll(enrollRequestDTO);
+            String email = generateJWT.extractSubject(accessToken) ;
+            return  userService.enroll(enrollRequestDTO , email);
         }else{
             return new ResponseEntity<>(
                     new StandardResponse(
@@ -32,6 +33,5 @@ public class UserController {
                             "Sign in failed !!!!"
                     ), HttpStatus.UNAUTHORIZED);
         }
-
     }
 }

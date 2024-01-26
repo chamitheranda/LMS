@@ -24,7 +24,8 @@ public class ResultsController {
                                                       @RequestBody ResultsRequestDTO resultsRequestDTO){
         if(generateJWT.validateToken(accessToken).isAuthenticationStatus()
                 && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
-            return  resultService.addResult(resultsRequestDTO);
+            String email = generateJWT.extractSubject(accessToken) ;
+            return  resultService.addResult(resultsRequestDTO ,email );
         }else{
             return new ResponseEntity<>(
                     new StandardResponse(
@@ -38,9 +39,9 @@ public class ResultsController {
 
 
     @PostMapping("/view_results/{email}")
-    public ResponseEntity<StandardResponse> viewResults(@RequestHeader("AuthenticationHeader") String accessToken ,
-                                                        @PathVariable("email") String email ){
+    public ResponseEntity<StandardResponse> viewResults(@RequestHeader("AuthenticationHeader") String accessToken ){
         if(generateJWT.validateToken(accessToken).isAuthenticationStatus()){
+            String email = generateJWT.extractSubject(accessToken) ;
             return  resultService.viewResults(email);
         }else{
             return new ResponseEntity<>(
@@ -52,4 +53,5 @@ public class ResultsController {
         }
 
     }
+
 }
