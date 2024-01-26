@@ -1,6 +1,7 @@
 package com.chamith.lms.springlmsapi.controller;
 
 import com.chamith.lms.springlmsapi.service.AdminService;
+import com.chamith.lms.springlmsapi.util.AuthenticationVerification;
 import com.chamith.lms.springlmsapi.util.GenerateJWT;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,10 @@ public class AdminController {
 
     @PatchMapping("/update_privilege/{email}")
     public ResponseEntity<StandardResponse> updatePrivilege(@RequestHeader("AuthenticationHeader") String accessToken) {
-        if (generateJWT.validateToken(accessToken).isAuthenticationStatus()) {
+        AuthenticationVerification authenticationVerification = generateJWT.validateToken(accessToken);
+        if (authenticationVerification.isAuthenticationStatus()) {
             String email = generateJWT.extractSubject(accessToken) ;
-            if (generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")) {
+            if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
                 return adminService.updatePrivilege(email);
             } else {
                 return new ResponseEntity<>(
