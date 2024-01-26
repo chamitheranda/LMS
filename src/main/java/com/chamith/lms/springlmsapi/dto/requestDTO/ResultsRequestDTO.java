@@ -11,5 +11,4 @@ public class ResultsRequestDTO {
     private String student_name ;
     private String subject;
     private String results;
-    private String email;
 }
