@@ -1,17 +1,26 @@
 package com.chamith.lms.springlmsapi.service;
 
+import com.chamith.lms.springlmsapi.mappers.EnrolledCourseMapper;
+import com.chamith.lms.springlmsapi.mappers.ResultMapper;
 import com.chamith.lms.springlmsapi.mappers.UserMapper;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AdminService {
 
     @Autowired
     private UserMapper userMapper ;
+
+    @Autowired
+    private ResultMapper resultMapper ;
+
+    @Autowired
+    private EnrolledCourseMapper enrolledCourseMapper ;
 
     public ResponseEntity<StandardResponse> updatePrivilege(String email) {
         if(userMapper.doesEmailExist(email) ){
@@ -41,7 +50,7 @@ public class AdminService {
                         ), HttpStatus.NOT_FOUND);
             }
         }
-
+    @Transactional
     public ResponseEntity<StandardResponse> deleteUser(String email) {
         if(userMapper.doesEmailExist(email) ){
             if( userMapper.getPrivilegeLevel(email).equals("admin")){
@@ -52,13 +61,35 @@ public class AdminService {
                                 "User can't delete !!!!"
                         ), HttpStatus.OK);
             }else {
-                userMapper.deleteUserByEmail(email);
-                return new ResponseEntity<>(
-                        new StandardResponse(
-                                200,
-                                "User Delete",
-                                "Delete successfully !!!!"
-                        ), HttpStatus.OK);
+                try{
+                    if(enrolledCourseMapper.doesEmailExistEnrolledCourses(email)){
+                        if(resultMapper.doesResultsExist(email)){
+                            userMapper.deleteUserByEmailFromUsers(email);
+                            enrolledCourseMapper.deleteUserFromEnrolledCourses(email);
+                            resultMapper.deleteUserFromResults(email);
+                        }else{
+                            userMapper.deleteUserByEmailFromUsers(email);
+                            enrolledCourseMapper.deleteUserFromEnrolledCourses(email);
+                        }
+                    }else {
+                        userMapper.deleteUserByEmailFromUsers(email);
+                    }
+
+                    return new ResponseEntity<>(
+                            new StandardResponse(
+                                    200,
+                                    "User Delete",
+                                    "Delete successfully !!!!"
+                            ), HttpStatus.OK);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    return new ResponseEntity<>(
+                            new StandardResponse(
+                                    500,
+                                    "Internal Server Error | Execution fallback",
+                                    "Delete Failed: An unexpected error occurred !!!!"
+                            ), HttpStatus.INTERNAL_SERVER_ERROR);
+                }
             }
 
         }else {
