@@ -57,10 +57,10 @@ public class AdminServiceImpl implements AdminService {
             if( userMapper.getPrivilegeLevel(email).equals("admin")){
                 return new ResponseEntity<>(
                         new StandardResponse(
-                                200,
+                                417,
                                 "User is a admin",
                                 "User can't delete !!!!"
-                        ), HttpStatus.OK);
+                        ), HttpStatus.EXPECTATION_FAILED);
             }else {
                 try{
                     if(enrolledCourseMapper.doesEmailExistEnrolledCourses(email)){

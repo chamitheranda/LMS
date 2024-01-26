@@ -17,8 +17,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUpdatePrivilegeSuccess {
-    @Mock
-    private AdminService adminService;
 
     @InjectMocks
     private AdminServiceImpl adminServiceImpl;
