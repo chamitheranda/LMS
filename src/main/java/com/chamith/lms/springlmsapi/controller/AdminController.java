@@ -73,11 +73,11 @@ public class AdminController {
     }
 
     @PatchMapping("/update_results/{email}/{result}")
-    public ResponseEntity<StandardResponse> updateResults(@RequestHeader("AuthenticationHeader") String accessToken,
-                                                          @PathVariable("result") String result) {
+    public ResponseEntity<StandardResponse> updateResult(@RequestHeader("AuthenticationHeader") String accessToken,
+                                                          @PathVariable("result") String result,
+                                                          @PathVariable("email") String email) {
         AuthenticationVerification authenticationVerification = generateJWT.validateToken(accessToken);
         if (authenticationVerification.isAuthenticationStatus()) {
-            String email = generateJWT.extractSubject(accessToken) ;
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
                 return adminService.updateResults(email, result);
             } else {
@@ -88,7 +88,6 @@ public class AdminController {
                                 "Access denied !!!!"
                         ), HttpStatus.FORBIDDEN);
             }
-
         } else {
             return new ResponseEntity<>(
                     new StandardResponse(
