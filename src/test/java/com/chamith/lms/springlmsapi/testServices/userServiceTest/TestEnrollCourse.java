@@ -50,4 +50,17 @@ public class TestEnrollCourse {
         assert response.getBody().getMessage().equals(msg);
         assert response.getBody().getData().equals(data);
     }
+
+    @Test
+    public  void TestEnrollSuccessWhenSubjectExistEmailDoesNotExist(){
+        when(userMapper.doesSubjectExist(email , enrollRequestDTO.getSubject())).thenReturn(true);
+        when(userMapper.doesEmailExist(email)).thenReturn(false);
+        ResponseEntity<StandardResponse> response = userService.enroll(enrollRequestDTO,email);
+
+        verify(userMapper).doesSubjectExist(email , enrollRequestDTO.getSubject());
+        verify(userMapper).doesEmailExist(email);
+        assertResponseStatus(response,HttpStatus.OK, "Enrolled course = "+enrollRequestDTO.getSubject() ,"Enrolled successfully  !!!!");
+
+    }
+
 }
