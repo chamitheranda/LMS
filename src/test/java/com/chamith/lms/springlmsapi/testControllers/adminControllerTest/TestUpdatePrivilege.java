@@ -28,63 +28,84 @@ public class TestUpdatePrivilege {
     @InjectMocks
     private AdminController adminController;
 
-    private String validAdminToken;
-    private String invalidToken;
-    private String validNonAdminToken;
+    private String accessToken;
 
     @Before
     public void setup() {
-        validAdminToken = "valid_admin_token";
-        invalidToken = "invalid_token";
-        validNonAdminToken = "valid_non_admin_token";
+        accessToken = "accessToken";
     }
 
     @Test
     public void testUpdatePrivilegeSuccess() {
 
-        when(generateJWT.validateToken(validAdminToken)).
+        when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "admin"));
 
-        when(generateJWT.extractSubject(validAdminToken)).thenReturn("admin@example.com");
+        when(generateJWT.extractSubject(accessToken)).thenReturn("admin@example.com");
 
         when(adminService.updatePrivilege("admin@example.com")).thenReturn(
                 new ResponseEntity<>(
-                        new StandardResponse(200, "Update Privilege", "Update successfully !!!!"),
+                        new StandardResponse(
+                                200,
+                                "Update Privilege",
+                                "Update successfully !!!!"),
                         HttpStatus.OK));
 
-        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(validAdminToken);
+        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken);
 
-        verify(generateJWT, times(1)).validateToken(validAdminToken);
-        verify(generateJWT).extractSubject(validAdminToken);
+        verify(generateJWT, times(1)).validateToken(accessToken);
+        verify(generateJWT).extractSubject(accessToken);
         verify(adminService).updatePrivilege("admin@example.com");
-        assertResponseStatus(response, HttpStatus.OK);
+        assertResponseStatus(
+                response,
+                HttpStatus.OK,
+                "Update Privilege",
+                "Update successfully !!!!"
+                );
     }
 
     @Test
     public void testUpdatePrivilegeUnauthorizedAccess() {
 
-        when(generateJWT.validateToken(invalidToken)).thenReturn(new AuthenticationVerification(false));
+        when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(false));
 
-        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(invalidToken);
+        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken);
 
-        verify(generateJWT).validateToken(invalidToken);
-        assertResponseStatus(response, HttpStatus.UNAUTHORIZED);
+        verify(generateJWT).validateToken(accessToken);
+        assertResponseStatus(
+                response,
+                HttpStatus.UNAUTHORIZED,
+                "Unauthorized Access",
+                "Sign in failed !!!!"
+                );
     }
 
     @Test
     public void testUpdatePrivilegeAccessDenied() {
 
-        when(generateJWT.validateToken(validNonAdminToken)).
+        when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "none"));
 
-        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(validNonAdminToken);
+        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken);
 
-        verify(generateJWT).validateToken(validNonAdminToken);
-        assertResponseStatus(response, HttpStatus.FORBIDDEN);
+        verify(generateJWT).validateToken(accessToken);
+        assertResponseStatus(
+                response,
+                HttpStatus.FORBIDDEN,
+                "User hasn't access | User is not a admin ",
+                "Access denied !!!!"
+                );
     }
 
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus) {
+    private void assertResponseStatus(
+            ResponseEntity<StandardResponse> response,
+            HttpStatus expectedStatus ,
+            String msg ,
+            Object data
+    ) {
         assert response.getStatusCode().equals(expectedStatus);
+        assert response.getBody().getMessage().equals(msg);
+        assert response.getBody().getData().equals(data);
     }
 
 
