@@ -35,15 +35,11 @@ public class TestSignIn {
                 "passWord"
         );
 
-        singInCredientials = new SingInCredientials(
-                "token",
-                HttpStatus.OK
-        );
     }
 
     @Test
     public void testSignInSucess(){
-        when(authService.signIn(signInRequestDTO)).thenReturn(singInCredientials);
+        when(authService.signIn(signInRequestDTO)).thenReturn(new SingInCredientials("token",HttpStatus.OK ));
 
         ResponseEntity<StandardResponse> response = authController.signIn(signInRequestDTO);
 
@@ -53,7 +49,23 @@ public class TestSignIn {
                 response,
                 HttpStatus.OK,
                 "Successfully sign in !!!!",
-                singInCredientials.getToken()
+               "token"
+        );
+    }
+
+    @Test
+    public void testSignInFailed(){
+        when(authService.signIn(signInRequestDTO)).thenReturn(new SingInCredientials(HttpStatus.UNAUTHORIZED ));
+
+        ResponseEntity<StandardResponse> response = authController.signIn(signInRequestDTO);
+
+        verify(authService).signIn(signInRequestDTO);
+
+        assertResponseStatus(
+                response,
+                HttpStatus.UNAUTHORIZED,
+                "Unauthorized Access",
+                HttpStatus.UNAUTHORIZED
         );
     }
 
