@@ -41,11 +41,18 @@ public class TestEnrollCourse {
 
         verify(userMapper).doesSubjectExist(email , enrollRequestDTO.getSubject());
 
-        assertResponseStatus(response,HttpStatus.OK, "Enrolled course = "+enrollRequestDTO.getSubject() ,"Enrolled successfully  !!!!");
+        assertResponseStatus(
+                response,
+                HttpStatus.OK,
+                "Enrolled course = "+enrollRequestDTO.getSubject() ,
+                "Enrolled successfully  !!!!"
+        );
 
     }
 
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data) {
+    private void assertResponseStatus(
+            ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data
+    ) {
         assert response.getStatusCode().equals(expectedStatus);
         assert response.getBody().getMessage().equals(msg);
         assert response.getBody().getData().equals(data);
@@ -59,8 +66,31 @@ public class TestEnrollCourse {
 
         verify(userMapper).doesSubjectExist(email , enrollRequestDTO.getSubject());
         verify(userMapper).doesEmailExist(email);
-        assertResponseStatus(response,HttpStatus.OK, "Enrolled course = "+enrollRequestDTO.getSubject() ,"Enrolled successfully  !!!!");
+        assertResponseStatus(
+                response,
+                HttpStatus.OK,
+                "Enrolled course = "+enrollRequestDTO.getSubject() ,
+                "Enrolled successfully  !!!!"
+        );
 
     }
+
+    @Test
+    public  void TestEnrollExpectationFailed(){
+        when(userMapper.doesSubjectExist(email , enrollRequestDTO.getSubject())).thenReturn(true);
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+        ResponseEntity<StandardResponse> response = userService.enroll(enrollRequestDTO,email);
+
+        verify(userMapper).doesSubjectExist(email , enrollRequestDTO.getSubject());
+        verify(userMapper).doesEmailExist(email);
+        assertResponseStatus(
+                response,
+                HttpStatus.EXPECTATION_FAILED,
+                "User Enrolled subject =  "+enrollRequestDTO.getSubject(),
+                "Already enrolled for this subject!!!!"
+        );
+
+    }
+
 
 }
