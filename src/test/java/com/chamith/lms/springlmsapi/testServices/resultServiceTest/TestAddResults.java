@@ -61,6 +61,67 @@ public class TestAddResults {
     }
 
 
+    @Test
+    public void testAddResultsExpectationFailed(){
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("admin");
+
+        ResponseEntity<StandardResponse> response = resultService.addResult(resultsRequestDTO,email);
+
+        verify(userMapper).doesEmailExist(email);
+        verify(userMapper).getPrivilegeLevel(email);
+
+        assertResponseStatus(
+                response,
+                HttpStatus.EXPECTATION_FAILED,
+                "User is a admin",
+                "Admin doesn't have results !!!!"
+        );
+    }
+
+    @Test
+    public void testAddResultsAlreadyReported(){
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("none");
+        when(resultMapper.doesSubjectExist(resultsRequestDTO.getSubject())).thenReturn(true);
+
+        ResponseEntity<StandardResponse> response = resultService.addResult(resultsRequestDTO,email);
+
+        verify(userMapper).doesEmailExist(email);
+        verify(userMapper).getPrivilegeLevel(email);
+        verify(resultMapper).doesSubjectExist(resultsRequestDTO.getSubject());
+
+        assertResponseStatus(
+                response,
+                HttpStatus.ALREADY_REPORTED,
+                "Results exists",
+                "Result already entered  !!!!"
+        );
+    }
+
+    @Test
+    public void testAddResultsSucess(){
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("none");
+        when(resultMapper.doesSubjectExist(resultsRequestDTO.getSubject())).thenReturn(false);
+        when(userMapper.doesSubjectExist(resultsRequestDTO.getSubject() ,email)).thenReturn(true);
+
+        ResponseEntity<StandardResponse> response = resultService.addResult(resultsRequestDTO,email);
+
+        verify(userMapper).doesEmailExist(email);
+        verify(userMapper).getPrivilegeLevel(email);
+        verify(resultMapper).doesSubjectExist(resultsRequestDTO.getSubject());
+        verify(userMapper).doesSubjectExist(resultsRequestDTO.getSubject(), email);
+
+
+        assertResponseStatus(
+                response,
+                HttpStatus.OK,
+                "Results entered",
+                "Result enter successfully !!!!"
+        );
+    }
+
     private void assertResponseStatus(
             ResponseEntity<StandardResponse> response,
             HttpStatus expectedStatus ,
