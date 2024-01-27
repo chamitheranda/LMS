@@ -1,9 +1,7 @@
 package com.chamith.lms.springlmsapi.testControllers.userControllerTest;
 
-import com.chamith.lms.springlmsapi.controller.AdminController;
 import com.chamith.lms.springlmsapi.controller.UserController;
 import com.chamith.lms.springlmsapi.dto.requestDTO.EnrollRequestDTO;
-import com.chamith.lms.springlmsapi.service.AdminService;
 import com.chamith.lms.springlmsapi.service.UserService;
 import com.chamith.lms.springlmsapi.util.AuthenticationVerification;
 import com.chamith.lms.springlmsapi.util.GenerateJWT;
@@ -32,24 +30,20 @@ public class TestEnrollCourse {
     private UserController userController;
 
 
-    private String validAdminToken;
-    private String invalidToken;
-    private String validNonAdminToken;
+    private String accessToken;
     private EnrollRequestDTO enrollRequestDTO ;
 
     @Before
     public void setup() {
-        validAdminToken = "valid_admin_token";
-        invalidToken = "invalid_token";
-        validNonAdminToken = "valid_non_admin_token";
+        accessToken = "accessToken";
         enrollRequestDTO = new EnrollRequestDTO("Subject");
     }
 
     @Test
     public void testUpdateResultSuccess() {
-        when(generateJWT.validateToken(validNonAdminToken)).
+        when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true ));
-        when(generateJWT.extractSubject(validNonAdminToken)).thenReturn("test@gmail.com");
+        when(generateJWT.extractSubject(accessToken)).thenReturn("test@gmail.com");
         when(userService.enroll(enrollRequestDTO, "test@gmail.com")).thenReturn(
                 new ResponseEntity<>(
                         new StandardResponse(
@@ -58,26 +52,40 @@ public class TestEnrollCourse {
                                 "Enrolled successfully  !!!!"
                         ), HttpStatus.OK));
 
-        ResponseEntity<StandardResponse> response = userController.enrollCourses(validNonAdminToken , enrollRequestDTO);
+        ResponseEntity<StandardResponse> response = userController.enrollCourses(accessToken , enrollRequestDTO);
 
-        verify(generateJWT, times(1)).validateToken(validNonAdminToken);
+        verify(generateJWT, times(1)).validateToken(accessToken);
         verify(userService).enroll(enrollRequestDTO, "test@gmail.com");
-        verify(generateJWT).extractSubject(validNonAdminToken);
-        assertResponseStatus(response, HttpStatus.OK,"Enrolled course = "+enrollRequestDTO.getSubject(),"Enrolled successfully  !!!!");
+        verify(generateJWT).extractSubject(accessToken);
+        assertResponseStatus(
+                response,
+                HttpStatus.OK,
+                "Enrolled course = "+enrollRequestDTO.getSubject(),
+                "Enrolled successfully  !!!!");
     }
 
     @Test
     public void testUpdateResultUnauthorized() {
-        when(generateJWT.validateToken(invalidToken)).
+        when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(false ));
 
-        ResponseEntity<StandardResponse> response = userController.enrollCourses(invalidToken , enrollRequestDTO);
+        ResponseEntity<StandardResponse> response = userController.enrollCourses(accessToken , enrollRequestDTO);
 
-        verify(generateJWT, times(1)).validateToken(invalidToken);
-        assertResponseStatus(response, HttpStatus.UNAUTHORIZED,"Unauthorized Access","Sign in failed !!!!");
+        verify(generateJWT, times(1)).validateToken(accessToken);
+        assertResponseStatus(
+                response,
+                HttpStatus.UNAUTHORIZED,
+                "Unauthorized Access",
+                "Sign in failed !!!!"
+        );
     }
 
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data) {
+    private void assertResponseStatus(
+            ResponseEntity<StandardResponse> response,
+            HttpStatus expectedStatus ,
+            String msg ,
+            Object data
+    ) {
         assert response.getStatusCode().equals(expectedStatus);
         assert response.getBody().getMessage().equals(msg);
         assert response.getBody().getData().equals(data);

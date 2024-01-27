@@ -50,14 +50,6 @@ public class TestEnrollCourse {
 
     }
 
-    private void assertResponseStatus(
-            ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data
-    ) {
-        assert response.getStatusCode().equals(expectedStatus);
-        assert response.getBody().getMessage().equals(msg);
-        assert response.getBody().getData().equals(data);
-    }
-
     @Test
     public  void TestEnrollSuccessWhenSubjectExistEmailDoesNotExist(){
         when(userMapper.doesSubjectExist(email , enrollRequestDTO.getSubject())).thenReturn(true);
@@ -92,5 +84,15 @@ public class TestEnrollCourse {
 
     }
 
+    private void assertResponseStatus(
+            ResponseEntity<StandardResponse> response,
+            HttpStatus expectedStatus ,
+            String msg ,
+            Object data
+    ) {
+        assert response.getStatusCode().equals(expectedStatus);
+        assert response.getBody().getMessage().equals(msg);
+        assert response.getBody().getData().equals(data);
+    }
 
 }

@@ -31,28 +31,24 @@ public class TestDeleteUser {
     @Mock
     private EnrolledCourseMapper enrolledCourseMapper ;
 
-    private String adminEmail;
-    private String invalidEmail;
-    private String validNonAdminEmail;
+    private String email;
 
     @Before
     public void setup() {
-        adminEmail = "valid_admin_email";
-        invalidEmail = "invalid_email";
-        validNonAdminEmail = "valid_non_admin_email";
+        email = "email";
     }
     @Test
     public void testDeleteUserSuccessful() {
 
-        when(userMapper.doesEmailExist(validNonAdminEmail)).thenReturn(true);
-        when(resultMapper.doesResultsExist(validNonAdminEmail)).thenReturn(true);
-        when(enrolledCourseMapper.doesEmailExistEnrolledCourses(validNonAdminEmail)).thenReturn(true);
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+        when(resultMapper.doesResultsExist(email)).thenReturn(true);
+        when(enrolledCourseMapper.doesEmailExistEnrolledCourses(email)).thenReturn(true);
 
-        ResponseEntity<StandardResponse> response = adminServiceImpl.deleteUser(validNonAdminEmail);
+        ResponseEntity<StandardResponse> response = adminServiceImpl.deleteUser(email);
 
-        verify(userMapper).doesEmailExist(validNonAdminEmail);
-        verify(resultMapper).doesResultsExist(validNonAdminEmail);
-        verify(enrolledCourseMapper).doesEmailExistEnrolledCourses(validNonAdminEmail);
+        verify(userMapper).doesEmailExist(email);
+        verify(resultMapper).doesResultsExist(email);
+        verify(enrolledCourseMapper).doesEmailExistEnrolledCourses(email);
 
         assertResponseStatus(response, HttpStatus.OK , "User Delete" , "Delete successfully !!!!");
 
@@ -61,17 +57,22 @@ public class TestDeleteUser {
     @Test
     public void testDeleteUserNotFound() {
 
-        when(userMapper.doesEmailExist(validNonAdminEmail)).thenReturn(false);
+        when(userMapper.doesEmailExist(email)).thenReturn(false);
 
-        ResponseEntity<StandardResponse> response = adminServiceImpl.deleteUser(validNonAdminEmail);
+        ResponseEntity<StandardResponse> response = adminServiceImpl.deleteUser(email);
 
-        verify(userMapper).doesEmailExist(validNonAdminEmail);
+        verify(userMapper).doesEmailExist(email);
 
         assertResponseStatus(response, HttpStatus.NOT_FOUND ,"User not found" , "Delete Failed !!!!" );
 
     }
 
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data) {
+    private void assertResponseStatus(
+            ResponseEntity<StandardResponse> response,
+            HttpStatus expectedStatus ,
+            String msg ,
+            Object data
+    ) {
         assert response.getStatusCode().equals(expectedStatus);
         assert response.getBody().getMessage().equals(msg);
         assert response.getBody().getData().equals(data);

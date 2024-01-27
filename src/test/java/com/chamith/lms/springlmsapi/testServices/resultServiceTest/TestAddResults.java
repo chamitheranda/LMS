@@ -3,7 +3,6 @@ package com.chamith.lms.springlmsapi.testServices.resultServiceTest;
 import com.chamith.lms.springlmsapi.dto.requestDTO.ResultsRequestDTO;
 import com.chamith.lms.springlmsapi.mappers.ResultMapper;
 import com.chamith.lms.springlmsapi.mappers.UserMapper;
-import com.chamith.lms.springlmsapi.service.ResultService;
 import com.chamith.lms.springlmsapi.service.impl.ResultServiceImpl;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
 import org.junit.Before;

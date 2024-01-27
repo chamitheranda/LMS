@@ -31,41 +31,52 @@ public class TestUpdateResults {
     @Mock
     private EnrolledCourseMapper enrolledCourseMapper ;
 
-    private String adminEmail;
-    private String invalidEmail;
-    private String validNonAdminEmail;
+    private String email;
 
     @Before
     public void setup() {
-        adminEmail = "valid_admin_email";
-        invalidEmail = "invalid_email";
-        validNonAdminEmail = "valid_non_admin_email";
+       email = "email";
     }
     @Test
     public void testUpdateResultSuccessful() {
 
-        when(userMapper.doesEmailExist(validNonAdminEmail)).thenReturn(true);
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
 
-        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(validNonAdminEmail,"A");
+        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(email,"A");
 
-        verify(userMapper).doesEmailExist(validNonAdminEmail);
+        verify(userMapper).doesEmailExist(email);
 
-        assertResponseStatus(response, HttpStatus.OK ,"Update Results" ,"Result Update successfully !!!!"  );
+        assertResponseStatus(
+                response,
+                HttpStatus.OK ,
+                "Update Results" ,
+                "Result Update successfully !!!!"
+        );
     }
 
     @Test
     public void testUpdateResultNotFound() {
 
-        when(userMapper.doesEmailExist(validNonAdminEmail)).thenReturn(false);
+        when(userMapper.doesEmailExist(email)).thenReturn(false);
 
-        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(validNonAdminEmail , "A");
+        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(email , "A");
 
-        verify(userMapper).doesEmailExist(validNonAdminEmail);
+        verify(userMapper).doesEmailExist(email);
 
-        assertResponseStatus(response, HttpStatus.NOT_FOUND , "email not found","update failed !!!!");
+        assertResponseStatus(
+                response,
+                HttpStatus.NOT_FOUND ,
+                "email not found",
+                "update failed !!!!"
+        );
     }
 
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data) {
+    private void assertResponseStatus(
+            ResponseEntity<StandardResponse> response,
+            HttpStatus expectedStatus ,
+            String msg ,
+            Object data
+    ) {
         assert response.getStatusCode().equals(expectedStatus);
         assert response.getBody().getMessage().equals(msg);
         assert response.getBody().getData().equals(data);
