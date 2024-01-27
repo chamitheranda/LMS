@@ -66,6 +66,17 @@ public class TestEnrollCourse {
         assertResponseStatus(response, HttpStatus.OK,"Enrolled course = "+enrollRequestDTO.getSubject(),"Enrolled successfully  !!!!");
     }
 
+    @Test
+    public void testUpdateResultUnauthorized() {
+        when(generateJWT.validateToken(invalidToken)).
+                thenReturn(new AuthenticationVerification(false ));
+
+        ResponseEntity<StandardResponse> response = userController.enrollCourses(invalidToken , enrollRequestDTO);
+
+        verify(generateJWT, times(1)).validateToken(invalidToken);
+        assertResponseStatus(response, HttpStatus.UNAUTHORIZED,"Unauthorized Access","Sign in failed !!!!");
+    }
+
     private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data) {
         assert response.getStatusCode().equals(expectedStatus);
         assert response.getBody().getMessage().equals(msg);
