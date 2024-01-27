@@ -43,7 +43,7 @@ public class TestViewResults {
         );
     }
     @Test
-    public void TestViewResults(){
+    public void testViewResults(){
         when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(true));
         when(generateJWT.extractSubject(accessToken)).thenReturn(email);
         when(resultService.viewResults(email)).thenReturn(
@@ -66,7 +66,21 @@ public class TestViewResults {
         );
     }
 
+    @Test
+    public void testViewResultUnorthorized(){
+        when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(false));
 
+        ResponseEntity<StandardResponse> response = resultsController.viewResults(accessToken);
+
+        verify(generateJWT).validateToken(accessToken);
+
+        assertResponseStatus(
+                response,
+                HttpStatus.UNAUTHORIZED,
+                "Unauthorized Access",
+                "Sign in failed !!!!"
+        );
+    }
 
     private void assertResponseStatus(
             ResponseEntity<StandardResponse> response,
