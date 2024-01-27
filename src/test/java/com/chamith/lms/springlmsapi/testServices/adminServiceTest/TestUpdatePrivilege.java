@@ -1,4 +1,4 @@
-package com.chamith.lms.springlmsapi.testServices;
+package com.chamith.lms.springlmsapi.testServices.adminServiceTest;
 
 import com.chamith.lms.springlmsapi.mappers.UserMapper;
 import com.chamith.lms.springlmsapi.service.AdminService;
