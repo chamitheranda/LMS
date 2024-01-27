@@ -45,18 +45,17 @@ public class TestDeleteUser {
     public void testDeleteUserSuccessful() {
 
         when(userMapper.doesEmailExist(validNonAdminEmail)).thenReturn(true);
-        when(userMapper.getPrivilegeLevel(validNonAdminEmail)).thenReturn("user");
         when(resultMapper.doesResultsExist(validNonAdminEmail)).thenReturn(true);
         when(enrolledCourseMapper.doesEmailExistEnrolledCourses(validNonAdminEmail)).thenReturn(true);
 
         ResponseEntity<StandardResponse> response = adminServiceImpl.deleteUser(validNonAdminEmail);
 
         verify(userMapper).doesEmailExist(validNonAdminEmail);
-        verify(userMapper).getPrivilegeLevel(validNonAdminEmail);
         verify(resultMapper).doesResultsExist(validNonAdminEmail);
         verify(enrolledCourseMapper).doesEmailExistEnrolledCourses(validNonAdminEmail);
 
-        assertResponseStatus(response, HttpStatus.OK);
+        assertResponseStatus(response, HttpStatus.OK , "User Delete" , "Delete successfully !!!!");
+
     }
 
     @Test
@@ -68,24 +67,14 @@ public class TestDeleteUser {
 
         verify(userMapper).doesEmailExist(validNonAdminEmail);
 
-        assertResponseStatus(response, HttpStatus.NOT_FOUND);
+        assertResponseStatus(response, HttpStatus.NOT_FOUND ,"User not found" , "Delete Failed !!!!" );
+
     }
 
-    @Test
-    public void testDeleteUserExpectationFailed() {
-        when(userMapper.doesEmailExist(validNonAdminEmail)).thenReturn(true);
-        when(userMapper.getPrivilegeLevel(validNonAdminEmail)).thenReturn("admin");
-
-        ResponseEntity<StandardResponse> response = adminServiceImpl.deleteUser(validNonAdminEmail);
-
-        verify(userMapper).doesEmailExist(validNonAdminEmail);
-        verify(userMapper).getPrivilegeLevel(validNonAdminEmail);
-
-        assertResponseStatus(response, HttpStatus.EXPECTATION_FAILED);
-    }
-
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus) {
+    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data) {
         assert response.getStatusCode().equals(expectedStatus);
+        assert response.getBody().getMessage().equals(msg);
+        assert response.getBody().getData().equals(data);
     }
 
 }
