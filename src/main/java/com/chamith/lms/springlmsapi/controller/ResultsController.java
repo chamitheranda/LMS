@@ -21,20 +21,28 @@ public class ResultsController {
 
     @PostMapping("/add_results")
     public ResponseEntity<StandardResponse> addResult(@RequestHeader("AuthenticationHeader") String accessToken ,
-                                                      @RequestBody ResultsRequestDTO resultsRequestDTO){
-        if(generateJWT.validateToken(accessToken).isAuthenticationStatus()
-                && generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")){
-            String email = generateJWT.extractSubject(accessToken) ;
-            return  resultService.addResult(resultsRequestDTO ,email );
-        }else{
+                                                      @RequestBody ResultsRequestDTO resultsRequestDTO) {
+        if (generateJWT.validateToken(accessToken).isAuthenticationStatus()) {
+            if (generateJWT.validateToken(accessToken).getPrivilegeLevel().equals("admin")) {
+                String email = generateJWT.extractSubject(accessToken);
+                return resultService.addResult(resultsRequestDTO, email);
+            } else {
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                403,
+                                "User hasn't access",
+                                "Access denied !!!!"
+                        ), HttpStatus.FORBIDDEN);
+            }
+
+        }else {
             return new ResponseEntity<>(
                     new StandardResponse(
-                            403,
-                            "User hasn't access",
-                            "Access denied !!!!"
-                    ), HttpStatus.FORBIDDEN);
+                            401,
+                            "Unauthorized Access",
+                            "Sign in failed !!!!"
+                    ), HttpStatus.UNAUTHORIZED);
         }
-
     }
 
 
