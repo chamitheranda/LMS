@@ -46,7 +46,8 @@ public class TestAddResults {
 
     @Test
     public void testAddResultSuccess(){
-        when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(true , "admin"));
+        when(generateJWT.validateToken(accessToken))
+                .thenReturn(new AuthenticationVerification(true , "admin"));
         when(generateJWT.extractSubject(accessToken)).thenReturn(email);
         when(resultService.addResult(resultsRequestDTO,email)).thenReturn(
                 new ResponseEntity<>(
@@ -54,25 +55,37 @@ public class TestAddResults {
                                 200,
                                 "Results entered",
                                 "Result enter successfully !!!!"
-                        ), HttpStatus.OK));
+                        ), HttpStatus.OK)
+                );
 
         ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO);
 
         verify(generateJWT).validateToken(accessToken);
         verify(generateJWT).extractSubject(accessToken);
         verify(resultService).addResult(resultsRequestDTO ,email);
-        assertResponseStatus(response , HttpStatus.OK , "Results entered","Result enter successfully !!!!");
+        assertResponseStatus(
+                response ,
+                HttpStatus.OK ,
+                "Results entered",
+                "Result enter successfully !!!!"
+        );
     }
 
     @Test
     public void addResultsAccessDenied(){
-        when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(true , "user"));
+        when(generateJWT.validateToken(accessToken))
+                .thenReturn(new AuthenticationVerification(true , "user"));
 
         ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO);
 
         verify(generateJWT).validateToken(accessToken);
 
-        assertResponseStatus(response , HttpStatus.FORBIDDEN , "User hasn't access","Access denied !!!!");
+        assertResponseStatus(
+                response ,
+                HttpStatus.FORBIDDEN ,
+                "User hasn't access",
+                "Access denied !!!!"
+        );
     }
 
     @Test
@@ -82,10 +95,20 @@ public class TestAddResults {
         ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO);
 
         verify(generateJWT).validateToken(accessToken);
-        assertResponseStatus(response , HttpStatus.UNAUTHORIZED , "Unauthorized Access","Sign in failed !!!!");
+        assertResponseStatus(
+                response ,
+                HttpStatus.UNAUTHORIZED ,
+                "Unauthorized Access",
+                "Sign in failed !!!!"
+        );
     }
 
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data) {
+    private void assertResponseStatus(
+            ResponseEntity<StandardResponse> response,
+            HttpStatus expectedStatus ,
+            String msg ,
+            String data
+    ) {
         assert response.getStatusCode().equals(expectedStatus);
         assert response.getBody().getMessage().equals(msg);
         assert response.getBody().getData().equals(data);
