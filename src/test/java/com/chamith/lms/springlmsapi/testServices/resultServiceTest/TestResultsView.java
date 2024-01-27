@@ -1,6 +1,7 @@
 package com.chamith.lms.springlmsapi.testServices.resultServiceTest;
 
 import com.chamith.lms.springlmsapi.dto.requestDTO.ResultsRequestDTO;
+import com.chamith.lms.springlmsapi.dto.responseDTO.ViewResultsResponseDTO;
 import com.chamith.lms.springlmsapi.mappers.ResultMapper;
 import com.chamith.lms.springlmsapi.mappers.UserMapper;
 import com.chamith.lms.springlmsapi.service.impl.ResultServiceImpl;
@@ -13,6 +14,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,17 +35,19 @@ public class TestResultsView {
 
     private String accessToken ;
     private String email ;
-    private ResultsRequestDTO resultsRequestDTO ;
+    private List<ViewResultsResponseDTO> results ;
 
     @Before
     public void setUp(){
         accessToken = "token";
-        email = "example@gmail.com" ;
-        resultsRequestDTO = new ResultsRequestDTO(
+        email = "example@gmail.com";
+        results = new ArrayList<>();
+
+        ViewResultsResponseDTO result1 = new ViewResultsResponseDTO(
                 "name",
-                "subject",
                 "results"
         );
+        results.add(result1);
     }
 
     @Test
@@ -60,6 +66,23 @@ public class TestResultsView {
         );
     }
 
+    @Test
+    public void testViewResultsSucess(){
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+        when(userMapper.getAllResults(email)).thenReturn(results);
+
+        ResponseEntity<StandardResponse> response = resultService.viewResults(email);
+
+        verify(userMapper).doesEmailExist(email);
+        verify(userMapper).getAllResults(email);
+
+        assertResponseStatus(
+                response,
+                HttpStatus.OK,
+                "This is the results "  ,
+                results
+        );
+    }
     private void assertResponseStatus(
             ResponseEntity<StandardResponse> response,
             HttpStatus expectedStatus ,
