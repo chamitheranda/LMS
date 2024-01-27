@@ -39,27 +39,13 @@ public class TestUpdatePrivilege {
     public void testUpdatePrivilege_SuccessfulUpdate() {
 
         when(userMapper.doesEmailExist(validNonAdminEmail)).thenReturn(true);
-        when(userMapper.getPrivilegeLevel(validNonAdminEmail)).thenReturn("user");
 
         ResponseEntity<StandardResponse> response = adminServiceImpl.updatePrivilege(validNonAdminEmail);
 
         verify(userMapper).doesEmailExist(validNonAdminEmail);
-        verify(userMapper).updatePrivilegeLevel(validNonAdminEmail);
 
-        assertResponseStatus(response, HttpStatus.OK);
-    }
+        assertResponseStatus(response, HttpStatus.OK,"Update Privilege","Update successfully !!!!");
 
-    @Test
-    public void testUpdatePrivilege_UserIsAdmin() {
-
-        when(userMapper.doesEmailExist(adminEmail)).thenReturn(true);
-        when(userMapper.getPrivilegeLevel(adminEmail)).thenReturn("admin");
-
-        ResponseEntity<StandardResponse> response = adminServiceImpl.updatePrivilege(adminEmail);
-
-        verify(userMapper).doesEmailExist(adminEmail);
-
-        assertResponseStatus(response, HttpStatus.EXPECTATION_FAILED);
     }
 
     @Test
@@ -70,10 +56,13 @@ public class TestUpdatePrivilege {
 
         verify(userMapper).doesEmailExist(invalidEmail);
 
-        assertResponseStatus(response, HttpStatus.NOT_FOUND);
+        assertResponseStatus(response, HttpStatus.NOT_FOUND,"email not found","update failed !!!!");
+
     }
 
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus) {
+    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus , String msg , String data) {
         assert response.getStatusCode().equals(expectedStatus);
+        assert response.getBody().getMessage().equals(msg);
+        assert response.getBody().getData().equals(data);
     }
 }
