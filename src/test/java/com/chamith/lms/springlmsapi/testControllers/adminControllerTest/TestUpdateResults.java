@@ -28,21 +28,16 @@ public class TestUpdateResults {
     @InjectMocks
     private AdminController adminController;
 
-    private String validAdminToken;
-    private String invalidToken;
-    private String validNonAdminToken;
+    private String accessToken;
 
     @Before
     public void setup() {
-        validAdminToken = "valid_admin_token";
-        invalidToken = "invalid_token";
-        validNonAdminToken = "valid_non_admin_token";
+       accessToken = "accessToken";
     }
-
 
     @Test
     public void testUpdateResultSuccess() {
-        when(generateJWT.validateToken(validAdminToken)).
+        when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "admin"));
 
         when(adminService.updateResults("validAdmin@example.com", "A")).thenReturn(
@@ -53,35 +48,65 @@ public class TestUpdateResults {
                                 "Result Update successfully !!!!"
                         ), HttpStatus.OK));
 
-        ResponseEntity<StandardResponse> response = adminController.updateResult(validAdminToken , "A" , "validAdmin@example.com");
+        ResponseEntity<StandardResponse> response = adminController.updateResult(
+                accessToken ,
+                "A" ,
+                "validAdmin@example.com"
+        );
 
-        verify(generateJWT, times(1)).validateToken(validAdminToken);
+        verify(generateJWT, times(1)).validateToken(accessToken);
         verify(adminService).updateResults("validAdmin@example.com","A");
-        assertResponseStatus(response, HttpStatus.OK);
+        assertResponseStatus(
+                response,
+                HttpStatus.OK,
+                "Update Results",
+                "Result Update successfully !!!!"
+                );
     }
 
 
     @Test
     public void testUpdateResultsAccessDenied() {
-        when(generateJWT.validateToken(invalidToken)).thenReturn(new AuthenticationVerification(false));
+        when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(false));
 
-        ResponseEntity<StandardResponse> response = adminController.updateResult(invalidToken , "A" , "dummy@gmail.com");
+        ResponseEntity<StandardResponse> response = adminController.updateResult(accessToken , "A" , "dummy@gmail.com");
 
-        verify(generateJWT).validateToken(invalidToken);
-        assertResponseStatus(response, HttpStatus.UNAUTHORIZED);
+        verify(generateJWT).validateToken(accessToken);
+        assertResponseStatus(
+                response,
+                HttpStatus.UNAUTHORIZED,
+                "Unauthorized Access",
+                "Sign in failed !!!!"
+                );
     }
 
     @Test
     public void testRemoveUserUnauthorized() {
-        when(generateJWT.validateToken(validNonAdminToken)).
+        when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "none"));
 
-        ResponseEntity<StandardResponse> response = adminController.updateResult(validNonAdminToken , "A" , "dummy@gmail.com");
+        ResponseEntity<StandardResponse> response = adminController.updateResult(
+                accessToken ,
+                "A" ,
+                "dummy@gmail.com"
+        );
 
-        verify(generateJWT).validateToken(validNonAdminToken);
-        assertResponseStatus(response, HttpStatus.FORBIDDEN);
+        verify(generateJWT).validateToken(accessToken);
+        assertResponseStatus(
+                response,
+                HttpStatus.FORBIDDEN,
+                "User hasn't access | User is not a admin ",
+                "Access denied !!!!"
+                );
     }
-    private void assertResponseStatus(ResponseEntity<StandardResponse> response, HttpStatus expectedStatus) {
+    private void assertResponseStatus(
+            ResponseEntity<StandardResponse> response,
+            HttpStatus expectedStatus ,
+            String msg ,
+            Object data
+    ) {
         assert response.getStatusCode().equals(expectedStatus);
+        assert response.getBody().getMessage().equals(msg);
+        assert response.getBody().getData().equals(data);
     }
 }
