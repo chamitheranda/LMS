@@ -8,5 +8,5 @@ public interface AdminService {
 
     ResponseEntity<StandardResponse> deleteUser(String email);
 
-    ResponseEntity<StandardResponse> updateResults(String email, String result);
+    ResponseEntity<StandardResponse> updateResults(String email, String result, String subject);
 }
