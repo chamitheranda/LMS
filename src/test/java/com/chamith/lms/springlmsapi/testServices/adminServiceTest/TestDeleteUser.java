@@ -40,18 +40,39 @@ public class TestDeleteUser {
     @Test
     public void testDeleteUserSuccessful() {
 
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("none");
         when(userMapper.doesEmailExist(email)).thenReturn(true);
-        when(resultMapper.doesResultsExist(email)).thenReturn(true);
-        when(enrolledCourseMapper.doesEmailExistEnrolledCourses(email)).thenReturn(true);
 
         ResponseEntity<StandardResponse> response = adminServiceImpl.deleteUser(email);
 
+        verify(userMapper).getPrivilegeLevel(email);
         verify(userMapper).doesEmailExist(email);
-        verify(resultMapper).doesResultsExist(email);
-        verify(enrolledCourseMapper).doesEmailExistEnrolledCourses(email);
 
-        assertResponseStatus(response, HttpStatus.OK , "User Delete" , "Delete successfully !!!!");
+        assertResponseStatus(
+                response,
+                HttpStatus.OK ,
+                "User Delete" ,
+                "Delete successfully !!!!"
+        );
+    }
 
+    @Test
+    public void testDeleteUserExpectationFailed() {
+
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("admin");
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+
+        ResponseEntity<StandardResponse> response = adminServiceImpl.deleteUser(email);
+
+        verify(userMapper).getPrivilegeLevel(email);
+        verify(userMapper).doesEmailExist(email);
+
+        assertResponseStatus(
+                response,
+                HttpStatus.EXPECTATION_FAILED ,
+                "User is an admin email = "+email ,
+                "Delete Failed !!!!"
+        );
     }
 
     @Test
@@ -63,7 +84,12 @@ public class TestDeleteUser {
 
         verify(userMapper).doesEmailExist(email);
 
-        assertResponseStatus(response, HttpStatus.NOT_FOUND ,"User not found" , "Delete Failed !!!!" );
+        assertResponseStatus(
+                response,
+                HttpStatus.NOT_FOUND ,
+                "User not found email = "+email ,
+                "Delete Failed !!!!"
+        );
 
     }
 
