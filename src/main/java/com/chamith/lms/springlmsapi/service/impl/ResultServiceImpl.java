@@ -7,6 +7,8 @@ import com.chamith.lms.springlmsapi.mappers.UserMapper;
 import com.chamith.lms.springlmsapi.service.ResultService;
 import com.chamith.lms.springlmsapi.util.GenerateJWT;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Service
 public class ResultServiceImpl implements ResultService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ResultServiceImpl.class);
 
     @Autowired
     private ResultMapper resultMapper ;
@@ -27,6 +31,7 @@ public class ResultServiceImpl implements ResultService {
     public ResponseEntity<StandardResponse> addResult(ResultsRequestDTO resultsRequestDTO, String email) {
         if(userMapper.doesEmailExist(email) ){
             if(userMapper.getPrivilegeLevel(email).equals("admin")){
+                logger.warn("Admin user email = "+email+" doesn't have results");
                 return new ResponseEntity<>(
                         new StandardResponse(
                                 417,
@@ -37,6 +42,7 @@ public class ResultServiceImpl implements ResultService {
                 if(!resultMapper.doesSubjectExist(resultsRequestDTO.getSubject())){
                    if(userMapper.doesSubjectExist(resultsRequestDTO.getSubject() , email)){
                        resultMapper.addResults(resultsRequestDTO);
+                       logger.info("Results added successfully subject = "+resultsRequestDTO.getSubject());
                        return new ResponseEntity<>(
                                new StandardResponse(
                                        200,
@@ -44,6 +50,7 @@ public class ResultServiceImpl implements ResultService {
                                        "Result enter successfully !!!!"
                                ), HttpStatus.OK);
                    }else {
+                       logger.error("User "+email+" doesn't enroll course = "+resultsRequestDTO.getSubject());
                        return new ResponseEntity<>(
                                new StandardResponse(
                                        417,
@@ -52,6 +59,8 @@ public class ResultServiceImpl implements ResultService {
                                ), HttpStatus.EXPECTATION_FAILED);
                    }
                 }else {
+                    logger.warn("Result already entered for subject : "
+                            +resultsRequestDTO.getSubject() + " for user email = "+email);
                     return new ResponseEntity<>(
                             new StandardResponse(
                                     208,
@@ -62,6 +71,7 @@ public class ResultServiceImpl implements ResultService {
             }
 
         }else {
+            logger.warn("Email not found");
             return new ResponseEntity<>(
                     new StandardResponse(
                             204,
@@ -75,6 +85,7 @@ public class ResultServiceImpl implements ResultService {
     public ResponseEntity<StandardResponse> viewResults(String email) {
         if(userMapper.doesEmailExist(email)){
             List<ViewResultsResponseDTO> resultSet = userMapper.getAllResults(email);
+            logger.info("User : "+email+" Viewed Results");
             return new ResponseEntity<>(
                     new StandardResponse(
                             200,
@@ -82,6 +93,7 @@ public class ResultServiceImpl implements ResultService {
                             resultSet
                     ), HttpStatus.OK);
         }else {
+            logger.info("Email not found");
             return new ResponseEntity<>(
                     new StandardResponse(
                             204,
