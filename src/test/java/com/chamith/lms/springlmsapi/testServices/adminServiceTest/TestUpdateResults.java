@@ -32,19 +32,25 @@ public class TestUpdateResults {
     private EnrolledCourseMapper enrolledCourseMapper ;
 
     private String email;
+    private String subject;
 
     @Before
     public void setup() {
        email = "email";
+       subject = "subject";
     }
     @Test
     public void testUpdateResultSuccessful() {
 
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("none");
         when(userMapper.doesEmailExist(email)).thenReturn(true);
+        when(resultMapper.doesResultsExistByEmailAndSubject(email,subject)).thenReturn(true);
 
-        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(email,"A");
+        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(email,"A", subject);
 
+        verify(userMapper).getPrivilegeLevel(email);
         verify(userMapper).doesEmailExist(email);
+        verify(resultMapper).doesResultsExistByEmailAndSubject(email,subject);
 
         assertResponseStatus(
                 response,
@@ -55,21 +61,62 @@ public class TestUpdateResults {
     }
 
     @Test
+    public void testUpdateResultSubjectNotFound() {
+
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("none");
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+        when(resultMapper.doesResultsExistByEmailAndSubject(email,subject)).thenReturn(false);
+
+        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(email,"A", subject);
+
+        verify(userMapper).getPrivilegeLevel(email);
+        verify(userMapper).doesEmailExist(email);
+        verify(resultMapper).doesResultsExistByEmailAndSubject(email,subject);
+
+        assertResponseStatus(
+                response,
+                HttpStatus.NO_CONTENT ,
+                "No Subject Present in DB" ,
+                "Result Update Failed !!!!"
+        );
+    }
+
+    @Test
     public void testUpdateResultNotFound() {
 
         when(userMapper.doesEmailExist(email)).thenReturn(false);
 
-        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(email , "A");
+        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(email , "A", subject);
 
         verify(userMapper).doesEmailExist(email);
 
         assertResponseStatus(
                 response,
                 HttpStatus.NOT_FOUND ,
-                "email not found",
-                "update failed !!!!"
+                "User not found ",
+                "Update Failed !!!!"
         );
     }
+
+    @Test
+    public void testUpdateResultExpectationFailed() {
+
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("admin");
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+
+        ResponseEntity<StandardResponse> response = adminServiceImpl.updateResults(email,"A", subject);
+
+        verify(userMapper).getPrivilegeLevel(email);
+        verify(userMapper).doesEmailExist(email);
+
+        assertResponseStatus(
+                response,
+                HttpStatus.EXPECTATION_FAILED ,
+                "User is an admin email = "+email ,
+                "Result Update Failed !!!!"
+        );
+    }
+
 
     private void assertResponseStatus(
             ResponseEntity<StandardResponse> response,
