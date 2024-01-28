@@ -17,4 +17,7 @@ public interface ResultMapper {
 
     @Delete("DELETE FROM results WHERE email = #{email}")
     void deleteUserFromResults(String email);
+
+    @Select("SELECT COUNT(*) > 0 FROM results WHERE email = #{email} AND subject = #{subject}")
+    boolean doesResultsExistByEmailAndSubject(String email , String subject);
 }
