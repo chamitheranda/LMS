@@ -1,9 +1,12 @@
 package com.chamith.lms.springlmsapi.controller;
 
 import com.chamith.lms.springlmsapi.service.AdminService;
+import com.chamith.lms.springlmsapi.service.impl.ResultServiceImpl;
 import com.chamith.lms.springlmsapi.util.AuthenticationVerification;
 import com.chamith.lms.springlmsapi.util.GenerateJWT;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,8 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     @PatchMapping("/update_privilege/{email}")
     public ResponseEntity<StandardResponse> updatePrivilege(@RequestHeader("AuthenticationHeader") String accessToken) {
         AuthenticationVerification authenticationVerification = generateJWT.validateToken(accessToken);
@@ -27,6 +32,7 @@ public class AdminController {
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
                 return adminService.updatePrivilege(email);
             } else {
+                logger.warn("Access denied for user = " + email);
                 return new ResponseEntity<>(
                         new StandardResponse(
                                 403,
@@ -36,6 +42,7 @@ public class AdminController {
             }
 
         } else {
+            logger.warn("Unauthorized Access");
             return new ResponseEntity<>(
                     new StandardResponse(
                             401,
@@ -53,6 +60,7 @@ public class AdminController {
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
                 return adminService.deleteUser(email);
             } else {
+                logger.warn("Access denied for user = " + email);
                 return new ResponseEntity<>(
                         new StandardResponse(
                                 403,
@@ -62,6 +70,7 @@ public class AdminController {
             }
 
         } else {
+            logger.warn("Unauthorized Access");
             return new ResponseEntity<>(
                     new StandardResponse(
                             401,
@@ -81,6 +90,7 @@ public class AdminController {
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
                 return adminService.updateResults(email, result);
             } else {
+                logger.warn("Access denied for user = " + email);
                 return new ResponseEntity<>(
                         new StandardResponse(
                                 403,
@@ -89,6 +99,7 @@ public class AdminController {
                         ), HttpStatus.FORBIDDEN);
             }
         } else {
+            logger.warn("Unauthorized Access");
             return new ResponseEntity<>(
                     new StandardResponse(
                             401,
