@@ -27,12 +27,14 @@ public class TestDeleteUser {
     @InjectMocks
     private AdminController adminController;
 
-    private String email;
+    private String adminEmail;
+    private String userEmail;
     private String accessToken;
 
     @Before
     public void setup() {
-        email = "email";
+        adminEmail = "adminEmail";
+        userEmail = "userEmail";
         accessToken = "token";
     }
 
@@ -42,26 +44,23 @@ public class TestDeleteUser {
         when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "admin"));
 
-        when(generateJWT.extractSubject(accessToken)).thenReturn("admin@example.com");
-
-        when(adminService.deleteUser("admin@example.com")).thenReturn(
+        when(adminService.deleteUser(userEmail)).thenReturn(
                 new ResponseEntity<>(
-                new StandardResponse(
-                        200,
-                        "User is a admin",
-                        "User can't delete !!!!"
-                ), HttpStatus.OK));
+                        new StandardResponse(
+                                200,
+                                "User Delete",
+                                "Delete successfully !!!!"
+                        ), HttpStatus.OK));
 
-        ResponseEntity<StandardResponse> response = adminController.removeUser(accessToken);
+        ResponseEntity<StandardResponse> response = adminController.removeUser(accessToken ,userEmail);
 
         verify(generateJWT, times(1)).validateToken(accessToken);
-        verify(generateJWT).extractSubject(accessToken);
-        verify(adminService).deleteUser("admin@example.com");
+        verify(adminService).deleteUser(userEmail);
         assertResponseStatus(
                 response,
                 HttpStatus.OK,
-                "User is a admin",
-                "User can't delete !!!!"
+                "User Delete",
+                "Delete successfully !!!!"
         );
     }
 
@@ -69,7 +68,7 @@ public class TestDeleteUser {
     public void testRemoveUserAccessDenied() {
         when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(false));
 
-        ResponseEntity<StandardResponse> response = adminController.removeUser(accessToken);
+        ResponseEntity<StandardResponse> response = adminController.removeUser(accessToken,userEmail);
 
         verify(generateJWT).validateToken(accessToken);
         assertResponseStatus(
@@ -85,7 +84,7 @@ public class TestDeleteUser {
         when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "none"));
 
-        ResponseEntity<StandardResponse> response = adminController.removeUser(accessToken);
+        ResponseEntity<StandardResponse> response = adminController.removeUser(accessToken,userEmail);
 
         verify(generateJWT).validateToken(accessToken);
         assertResponseStatus(
