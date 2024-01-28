@@ -28,7 +28,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity<StandardResponse> updatePrivilege(String email) {
-        if(userMapper.doesEmailExist(email) ){
+        if(userMapper.doesEmailExist(email)){
+            if(userMapper.getPrivilegeLevel(email).equals("none") ){
                 userMapper.updatePrivilegeLevel(email);
                 logger.info("Update user privilege : "+email );
                 return new ResponseEntity<>(
@@ -37,19 +38,29 @@ public class AdminServiceImpl implements AdminService {
                                 "Update Privilege",
                                 "Update successfully !!!!"
                         ), HttpStatus.OK);
-        }else {
-                logger.warn("Email = "+email+"NotFound");
+            }else {
+                logger.warn("Admin user can't Update , email = "+email );
                 return new ResponseEntity<>(
                         new StandardResponse(
-                                204,
-                                "email not found",
-                                "update failed !!!!"
-                        ), HttpStatus.NOT_FOUND);
+                                417,
+                                "User is an admin email = "+email ,
+                                "Update Failed !!!!"
+                        ), HttpStatus.EXPECTATION_FAILED);
             }
+        }else {
+            logger.info("User Not found email = "+email + " or admin user ");
+            return new ResponseEntity<>(
+                    new StandardResponse(
+                            204,
+                            "User not found ",
+                            "Privilege Update Failed !!!!"
+                    ), HttpStatus.NOT_FOUND);
         }
+    }
     @Override
     public ResponseEntity<StandardResponse> deleteUser(String email) {
-        if(userMapper.doesEmailExist(email) ){
+        if(userMapper.doesEmailExist(email)){
+            if(userMapper.getPrivilegeLevel(email).equals("none") ){
                 try{
                     if(enrolledCourseMapper.doesEmailExistEnrolledCourses(email)){
                         if(resultMapper.doesResultsExist(email)){
@@ -81,37 +92,66 @@ public class AdminServiceImpl implements AdminService {
                             ), HttpStatus.INTERNAL_SERVER_ERROR);
                 }
 
-        }else {
-            logger.info("User Not found email = "+email);
+            }else {
+                logger.warn("Admin user can't delete email = "+email );
+                return new ResponseEntity<>(
+                        new StandardResponse(
+                                417,
+                                "User is an admin email = "+email ,
+                                "Delete Failed !!!!"
+                        ), HttpStatus.EXPECTATION_FAILED);
+            }
+        }else{
+            logger.info("User Not found email = "+email );
             return new ResponseEntity<>(
                     new StandardResponse(
                             204,
-                            "User not found",
+                            "User not found email = "+email,
                             "Delete Failed !!!!"
                     ), HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
-    public ResponseEntity<StandardResponse> updateResults(String email , String result) {
-        if(userMapper.doesEmailExist(email) ){
-                userMapper.updateResult(result);
-                logger.info("Result Update Successfully email : "+email);
-                return new ResponseEntity<>(
-                        new StandardResponse(
-                                200,
-                                "Update Results",
-                                "Result Update successfully !!!!"
-                        ), HttpStatus.OK);
-        }else {
-               logger.warn("Email = "+email+"NotFound");
+    public ResponseEntity<StandardResponse> updateResults(String email, String result, String subject) {
+       if(userMapper.doesEmailExist(email)){
+           if(userMapper.getPrivilegeLevel(email).equals("none") ){
+               if(resultMapper.doesResultsExistByEmailAndSubject(email,subject)){
+                   userMapper.updateResult(result);
+                   logger.info("Result Update Successfully email : "+email);
+                   return new ResponseEntity<>(
+                           new StandardResponse(
+                                   200,
+                                   "Update Results",
+                                   "Result Update successfully !!!!"
+                           ), HttpStatus.OK);
+               }else{
+                   logger.warn("subject = "+subject+" not exist with email = "+email);
+                   return new ResponseEntity<>(
+                           new StandardResponse(
+                                   204,
+                                   "No Subject Present in DB",
+                                   "Result Update Failed !!!!"
+                           ), HttpStatus.NO_CONTENT);
+               }
+           }else {
+               logger.warn("Admin user doesn't have results , email = "+email );
                return new ResponseEntity<>(
-                        new StandardResponse(
-                                204,
-                                "email not found",
-                                "update failed !!!!"
-                        ), HttpStatus.NOT_FOUND);
-        }
+                       new StandardResponse(
+                               417,
+                               "User is an admin email = "+email ,
+                               "Result Update Failed !!!!"
+                       ), HttpStatus.EXPECTATION_FAILED);
+           }
+       }else {
+           logger.info("User Not found email = "+email + " or admin user ");
+           return new ResponseEntity<>(
+                   new StandardResponse(
+                           204,
+                           "User not found ",
+                           "Update Failed !!!!"
+                   ), HttpStatus.NOT_FOUND);
+       }
     }
 }
 
