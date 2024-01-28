@@ -40,7 +40,7 @@ public class TestUpdateResults {
         when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "admin"));
 
-        when(adminService.updateResults("validAdmin@example.com", "A")).thenReturn(
+        when(adminService.updateResults("validAdmin@example.com", "A", "subject")).thenReturn(
                 new ResponseEntity<>(
                         new StandardResponse(
                                 200,
@@ -51,11 +51,12 @@ public class TestUpdateResults {
         ResponseEntity<StandardResponse> response = adminController.updateResult(
                 accessToken ,
                 "A" ,
-                "validAdmin@example.com"
+                "validAdmin@example.com",
+                "subject"
         );
 
         verify(generateJWT, times(1)).validateToken(accessToken);
-        verify(adminService).updateResults("validAdmin@example.com","A");
+        verify(adminService).updateResults("validAdmin@example.com","A", "subject");
         assertResponseStatus(
                 response,
                 HttpStatus.OK,
@@ -69,7 +70,7 @@ public class TestUpdateResults {
     public void testUpdateResultsAccessDenied() {
         when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(false));
 
-        ResponseEntity<StandardResponse> response = adminController.updateResult(accessToken , "A" , "dummy@gmail.com");
+        ResponseEntity<StandardResponse> response = adminController.updateResult(accessToken , "A" , "dummy@gmail.com","subject");
 
         verify(generateJWT).validateToken(accessToken);
         assertResponseStatus(
@@ -88,7 +89,8 @@ public class TestUpdateResults {
         ResponseEntity<StandardResponse> response = adminController.updateResult(
                 accessToken ,
                 "A" ,
-                "dummy@gmail.com"
+                "dummy@gmail.com",
+                "subject"
         );
 
         verify(generateJWT).validateToken(accessToken);
