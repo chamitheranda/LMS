@@ -1,10 +1,13 @@
 package com.chamith.lms.springlmsapi.controller;
 
 import com.chamith.lms.springlmsapi.dto.requestDTO.ResultsRequestDTO;
+import com.chamith.lms.springlmsapi.service.AuthService;
 import com.chamith.lms.springlmsapi.service.ResultService;
 import com.chamith.lms.springlmsapi.util.AuthenticationVerification;
 import com.chamith.lms.springlmsapi.util.GenerateJWT;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +23,18 @@ public class ResultsController {
     @Autowired
     private ResultService resultService;
 
+    private static final Logger logger = LoggerFactory.getLogger(ResultsController.class);
+
     @PostMapping("/add_results")
     public ResponseEntity<StandardResponse> addResults(@RequestHeader("AuthenticationHeader") String accessToken ,
                                                       @RequestBody ResultsRequestDTO resultsRequestDTO) {
         AuthenticationVerification authenticationVerification = generateJWT.validateToken(accessToken);
         if (authenticationVerification.isAuthenticationStatus()) {
+            String email = generateJWT.extractSubject(accessToken);
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
-                String email = generateJWT.extractSubject(accessToken);
                 return resultService.addResult(resultsRequestDTO, email);
             } else {
+                logger.warn("Access Denied for user email = "+email);
                 return new ResponseEntity<>(
                         new StandardResponse(
                                 403,
@@ -38,6 +44,7 @@ public class ResultsController {
             }
 
         }else {
+            logger.warn("Unauthorized Access");
             return new ResponseEntity<>(
                     new StandardResponse(
                             401,
@@ -54,6 +61,7 @@ public class ResultsController {
             String email = generateJWT.extractSubject(accessToken) ;
             return  resultService.viewResults(email);
         }else{
+            logger.warn("Unauthorized Access");
             return new ResponseEntity<>(
                     new StandardResponse(
                             401,
