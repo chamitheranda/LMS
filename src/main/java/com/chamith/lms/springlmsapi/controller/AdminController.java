@@ -82,14 +82,16 @@ public class AdminController {
 
     }
 
-    @PatchMapping("/update_results/{email}/{result}")
+    @PatchMapping("/update_results/{email}/{result}/{subject}")
     public ResponseEntity<StandardResponse> updateResult(@RequestHeader("AuthenticationHeader") String accessToken,
                                                           @PathVariable("result") String result,
-                                                          @PathVariable("email") String email) {
+                                                          @PathVariable("email") String email,
+                                                          @PathVariable("subject") String subject
+                                                         ) {
         AuthenticationVerification authenticationVerification = generateJWT.validateToken(accessToken);
         if (authenticationVerification.isAuthenticationStatus()) {
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
-                return adminService.updateResults(email, result);
+                return adminService.updateResults(email, result,subject);
             } else {
                 logger.warn("Access denied for user = " + email);
                 return new ResponseEntity<>(
