@@ -30,13 +30,15 @@ public class TestAddResults {
     private ResultService resultService ;
 
     private String accessToken ;
-    private String email ;
+    private String userEmail ;
+    private String adminEmail ;
     private ResultsRequestDTO resultsRequestDTO ;
 
     @Before
     public void setUp(){
         accessToken = "token";
-        email = "example@gmail.com" ;
+        adminEmail = "adminEmail" ;
+        userEmail = "userEmail";
         resultsRequestDTO = new ResultsRequestDTO(
                 "name",
                 "subject",
@@ -48,8 +50,7 @@ public class TestAddResults {
     public void testAddResultSuccess(){
         when(generateJWT.validateToken(accessToken))
                 .thenReturn(new AuthenticationVerification(true , "admin"));
-        when(generateJWT.extractSubject(accessToken)).thenReturn(email);
-        when(resultService.addResult(resultsRequestDTO,email)).thenReturn(
+        when(resultService.addResult(resultsRequestDTO,userEmail)).thenReturn(
                 new ResponseEntity<>(
                         new StandardResponse(
                                 200,
@@ -58,11 +59,10 @@ public class TestAddResults {
                         ), HttpStatus.OK)
                 );
 
-        ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO);
+        ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO,userEmail);
 
         verify(generateJWT).validateToken(accessToken);
-        verify(generateJWT).extractSubject(accessToken);
-        verify(resultService).addResult(resultsRequestDTO ,email);
+        verify(resultService).addResult(resultsRequestDTO ,userEmail);
         assertResponseStatus(
                 response ,
                 HttpStatus.OK ,
@@ -76,7 +76,7 @@ public class TestAddResults {
         when(generateJWT.validateToken(accessToken))
                 .thenReturn(new AuthenticationVerification(true , "user"));
 
-        ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO);
+        ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO,userEmail);
 
         verify(generateJWT).validateToken(accessToken);
 
@@ -92,7 +92,7 @@ public class TestAddResults {
     public void addResultUnauthorized(){
         when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(false ));
 
-        ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO);
+        ResponseEntity<StandardResponse> response = resultsController.addResults(accessToken , resultsRequestDTO,userEmail);
 
         verify(generateJWT).validateToken(accessToken);
         assertResponseStatus(
