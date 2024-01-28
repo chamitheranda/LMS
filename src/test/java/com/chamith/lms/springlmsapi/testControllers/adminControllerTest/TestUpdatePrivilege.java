@@ -29,10 +29,14 @@ public class TestUpdatePrivilege {
     private AdminController adminController;
 
     private String accessToken;
+    private String userEmail;
+    private String adminEmail;
 
     @Before
     public void setup() {
         accessToken = "accessToken";
+        adminEmail = "adminEmail";
+        userEmail = "userEmail";
     }
 
     @Test
@@ -41,9 +45,7 @@ public class TestUpdatePrivilege {
         when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "admin"));
 
-        when(generateJWT.extractSubject(accessToken)).thenReturn("admin@example.com");
-
-        when(adminService.updatePrivilege("admin@example.com")).thenReturn(
+        when(adminService.updatePrivilege(userEmail)).thenReturn(
                 new ResponseEntity<>(
                         new StandardResponse(
                                 200,
@@ -51,11 +53,10 @@ public class TestUpdatePrivilege {
                                 "Update successfully !!!!"),
                         HttpStatus.OK));
 
-        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken);
+        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken,userEmail);
 
         verify(generateJWT, times(1)).validateToken(accessToken);
-        verify(generateJWT).extractSubject(accessToken);
-        verify(adminService).updatePrivilege("admin@example.com");
+        verify(adminService).updatePrivilege(userEmail);
         assertResponseStatus(
                 response,
                 HttpStatus.OK,
@@ -69,7 +70,7 @@ public class TestUpdatePrivilege {
 
         when(generateJWT.validateToken(accessToken)).thenReturn(new AuthenticationVerification(false));
 
-        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken);
+        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken,userEmail);
 
         verify(generateJWT).validateToken(accessToken);
         assertResponseStatus(
@@ -86,7 +87,7 @@ public class TestUpdatePrivilege {
         when(generateJWT.validateToken(accessToken)).
                 thenReturn(new AuthenticationVerification(true , "none"));
 
-        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken);
+        ResponseEntity<StandardResponse> response = adminController.updatePrivilege(accessToken,userEmail);
 
         verify(generateJWT).validateToken(accessToken);
         assertResponseStatus(
