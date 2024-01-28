@@ -1,7 +1,6 @@
 package com.chamith.lms.springlmsapi.testServices.adminServiceTest;
 
 import com.chamith.lms.springlmsapi.mappers.UserMapper;
-import com.chamith.lms.springlmsapi.service.AdminService;
 import com.chamith.lms.springlmsapi.service.impl.AdminServiceImpl;
 import com.chamith.lms.springlmsapi.util.StandardResponse;
 import org.junit.Before;
@@ -32,12 +31,14 @@ public class TestUpdatePrivilege {
     }
 
     @Test
-    public void testUpdatePrivilege_SuccessfulUpdate() {
+    public void testUpdatePrivilegeSuccessful() {
 
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("none");
         when(userMapper.doesEmailExist(email)).thenReturn(true);
 
         ResponseEntity<StandardResponse> response = adminServiceImpl.updatePrivilege(email);
 
+        verify(userMapper).getPrivilegeLevel(email);
         verify(userMapper).doesEmailExist(email);
 
         assertResponseStatus(
@@ -50,7 +51,27 @@ public class TestUpdatePrivilege {
     }
 
     @Test
-    public void testUpdatePrivilege_EmailNotFound() {
+    public void testUpdatePrivilegeExpectationFailed() {
+
+        when(userMapper.getPrivilegeLevel(email)).thenReturn("admin");
+        when(userMapper.doesEmailExist(email)).thenReturn(true);
+
+        ResponseEntity<StandardResponse> response = adminServiceImpl.updatePrivilege(email);
+
+        verify(userMapper).getPrivilegeLevel(email);
+        verify(userMapper).doesEmailExist(email);
+
+        assertResponseStatus(
+                response,
+                HttpStatus.EXPECTATION_FAILED,
+                "User is an admin email = "+email,
+                "Update Failed !!!!"
+        );
+
+    }
+
+    @Test
+    public void testUpdatePrivilegeNotFound() {
         when(userMapper.doesEmailExist(email)).thenReturn(false);
 
         ResponseEntity<StandardResponse> response = adminServiceImpl.updatePrivilege(email);
@@ -60,8 +81,8 @@ public class TestUpdatePrivilege {
         assertResponseStatus(
                 response,
                 HttpStatus.NOT_FOUND,
-                "email not found",
-                "update failed !!!!"
+                "User not found ",
+                "Privilege Update Failed !!!!"
         );
 
     }
