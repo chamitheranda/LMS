@@ -1,0 +1,159 @@
+10:41:01.310 [main] INFO  c.c.l.s.SpringLmsApiApplication - Starting SpringLmsApiApplication using Java 11.0.19 on DESKTOP-C6PE7LG with PID 8396 (E:\Internship\LMS_PROJECT\spring-lms-api\target\classes started by CHAMITH in E:\Internship\LMS_PROJECT\spring-lms-api)
+10:41:01.312 [main] INFO  c.c.l.s.SpringLmsApiApplication - No active profile set, falling back to default profiles: default
+10:41:02.132 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8083 (http)
+10:41:02.137 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8083"]
+10:41:02.137 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+10:41:02.137 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.46]
+10:41:02.193 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+10:41:02.193 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 847 ms
+10:41:02.510 [main] INFO  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: e2f2f490-b8dd-4025-8f4a-6097786ea3cf
+
+10:41:02.554 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2712e8f4, org.springframework.security.web.context.SecurityContextPersistenceFilter@1d944fc0, org.springframework.security.web.header.HeaderWriterFilter@5e24592e, org.springframework.security.web.authentication.logout.LogoutFilter@4656fcc5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1b791dca, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6f0c45f4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5896cb9c, org.springframework.security.web.session.SessionManagementFilter@30cafd13, org.springframework.security.web.access.ExceptionTranslationFilter@acb5508, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@77cddc0c]
+10:41:02.568 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+10:41:02.681 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+10:41:02.858 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+10:41:02.899 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8083"]
+10:41:02.911 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8083 (http) with context path ''
+10:41:02.912 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+10:41:02.920 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+10:41:02.941 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+10:41:03.085 [main] INFO  c.c.l.s.SpringLmsApiApplication - Started SpringLmsApiApplication in 2.016 seconds (JVM running for 2.815)
+10:41:22.235 [http-nio-8083-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:41:22.237 [http-nio-8083-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+10:41:22.237 [http-nio-8083-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+10:43:31.036 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+10:43:31.044 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+10:43:34.841 [main] INFO  c.c.l.s.SpringLmsApiApplication - Starting SpringLmsApiApplication using Java 11.0.19 on DESKTOP-C6PE7LG with PID 4272 (E:\Internship\LMS_PROJECT\spring-lms-api\target\classes started by CHAMITH in E:\Internship\LMS_PROJECT\spring-lms-api)
+10:43:34.843 [main] INFO  c.c.l.s.SpringLmsApiApplication - No active profile set, falling back to default profiles: default
+10:43:35.683 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8083 (http)
+10:43:35.688 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8083"]
+10:43:35.688 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+10:43:35.688 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.46]
+10:43:35.746 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+10:43:35.746 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 866 ms
+10:43:36.064 [main] INFO  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 136750ee-6783-4202-8a5f-0d26b506f11e
+
+10:43:36.104 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@d49e8c6, org.springframework.security.web.context.SecurityContextPersistenceFilter@1d226f27, org.springframework.security.web.header.HeaderWriterFilter@e972ee1, org.springframework.security.web.authentication.logout.LogoutFilter@30dd00b6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7c3c453b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5df92089, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2712e8f4, org.springframework.security.web.session.SessionManagementFilter@29090809, org.springframework.security.web.access.ExceptionTranslationFilter@6d7b2319, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2e3252]
+10:43:36.118 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+10:43:36.225 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+10:43:36.398 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+10:43:36.438 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8083"]
+10:43:36.451 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8083 (http) with context path ''
+10:43:36.451 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+10:43:36.458 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+10:43:36.476 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+10:43:36.610 [main] INFO  c.c.l.s.SpringLmsApiApplication - Started SpringLmsApiApplication in 2.026 seconds (JVM running for 2.848)
+10:44:01.262 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+10:44:01.271 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+10:44:05.290 [main] INFO  c.c.l.s.SpringLmsApiApplication - Starting SpringLmsApiApplication using Java 11.0.19 on DESKTOP-C6PE7LG with PID 7060 (E:\Internship\LMS_PROJECT\spring-lms-api\target\classes started by CHAMITH in E:\Internship\LMS_PROJECT\spring-lms-api)
+10:44:05.291 [main] INFO  c.c.l.s.SpringLmsApiApplication - No active profile set, falling back to default profiles: default
+10:44:06.109 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8083 (http)
+10:44:06.114 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8083"]
+10:44:06.114 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+10:44:06.114 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.46]
+10:44:06.165 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+10:44:06.166 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 837 ms
+10:44:06.464 [main] INFO  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: a7ab2a55-0f87-4566-aa58-4448f710de47
+
+10:44:06.506 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@349312d5, org.springframework.security.web.context.SecurityContextPersistenceFilter@67a8bcbb, org.springframework.security.web.header.HeaderWriterFilter@14b5752f, org.springframework.security.web.authentication.logout.LogoutFilter@315b4202, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@26ffd2c0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d226f27, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5885e231, org.springframework.security.web.session.SessionManagementFilter@6f0a4e30, org.springframework.security.web.access.ExceptionTranslationFilter@3095d401, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1f39269d]
+10:44:06.520 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+10:44:06.629 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+10:44:06.811 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+10:44:06.848 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8083"]
+10:44:06.860 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8083 (http) with context path ''
+10:44:06.861 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+10:44:06.868 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+10:44:06.886 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+10:44:07.030 [main] INFO  c.c.l.s.SpringLmsApiApplication - Started SpringLmsApiApplication in 1.991 seconds (JVM running for 2.839)
+10:44:30.295 [http-nio-8083-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:44:30.297 [http-nio-8083-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+10:44:30.299 [http-nio-8083-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+10:44:30.571 [http-nio-8083-exec-1] INFO  c.c.l.s.service.impl.AuthServiceImpl - User successfully SignUp
+10:45:58.757 [http-nio-8083-exec-5] INFO  c.c.l.s.service.impl.AuthServiceImpl - User successfully Sign IN
+10:48:00.660 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+10:48:00.668 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+10:48:04.573 [main] INFO  c.c.l.s.SpringLmsApiApplication - Starting SpringLmsApiApplication using Java 11.0.19 on DESKTOP-C6PE7LG with PID 10496 (E:\Internship\LMS_PROJECT\spring-lms-api\target\classes started by CHAMITH in E:\Internship\LMS_PROJECT\spring-lms-api)
+10:48:04.575 [main] INFO  c.c.l.s.SpringLmsApiApplication - No active profile set, falling back to default profiles: default
+10:48:05.388 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8083 (http)
+10:48:05.392 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8083"]
+10:48:05.393 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+10:48:05.393 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.46]
+10:48:05.446 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+10:48:05.446 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 835 ms
+10:48:05.746 [main] INFO  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 1cab447f-095c-4d4b-8eee-3d0a0303b40b
+
+10:48:05.788 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@349312d5, org.springframework.security.web.context.SecurityContextPersistenceFilter@67a8bcbb, org.springframework.security.web.header.HeaderWriterFilter@14b5752f, org.springframework.security.web.authentication.logout.LogoutFilter@315b4202, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@26ffd2c0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d226f27, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5885e231, org.springframework.security.web.session.SessionManagementFilter@6f0a4e30, org.springframework.security.web.access.ExceptionTranslationFilter@3095d401, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1f39269d]
+10:48:05.803 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+10:48:05.913 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+10:48:06.091 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+10:48:06.131 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8083"]
+10:48:06.144 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8083 (http) with context path ''
+10:48:06.145 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+10:48:06.152 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+10:48:06.186 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+10:48:06.315 [main] INFO  c.c.l.s.SpringLmsApiApplication - Started SpringLmsApiApplication in 1.99 seconds (JVM running for 2.869)
+10:48:11.685 [http-nio-8083-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:48:11.686 [http-nio-8083-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+10:48:11.687 [http-nio-8083-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+10:48:11.897 [http-nio-8083-exec-1] INFO  c.c.l.s.service.impl.AuthServiceImpl - User successfully Sign IN {} admin2@gmail.com
+10:48:56.143 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+10:48:56.151 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+10:49:00.224 [main] INFO  c.c.l.s.SpringLmsApiApplication - Starting SpringLmsApiApplication using Java 11.0.19 on DESKTOP-C6PE7LG with PID 5172 (E:\Internship\LMS_PROJECT\spring-lms-api\target\classes started by CHAMITH in E:\Internship\LMS_PROJECT\spring-lms-api)
+10:49:00.226 [main] INFO  c.c.l.s.SpringLmsApiApplication - No active profile set, falling back to default profiles: default
+10:49:01.070 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8083 (http)
+10:49:01.075 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8083"]
+10:49:01.075 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+10:49:01.076 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.46]
+10:49:01.126 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+10:49:01.127 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 864 ms
+10:49:01.430 [main] INFO  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 9818419f-ba32-4daa-b3d7-af8631a41270
+
+10:49:01.472 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2c0798bd, org.springframework.security.web.context.SecurityContextPersistenceFilter@d28c214, org.springframework.security.web.header.HeaderWriterFilter@4d290757, org.springframework.security.web.authentication.logout.LogoutFilter@6a51ae7c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f8c48f3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1b791dca, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2e3252, org.springframework.security.web.session.SessionManagementFilter@1bb96449, org.springframework.security.web.access.ExceptionTranslationFilter@a9e8da1, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@ee2ae9a]
+10:49:01.487 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+10:49:01.598 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+10:49:01.778 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+10:49:01.816 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8083"]
+10:49:01.828 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8083 (http) with context path ''
+10:49:01.829 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+10:49:01.836 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+10:49:01.854 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+10:49:01.995 [main] INFO  c.c.l.s.SpringLmsApiApplication - Started SpringLmsApiApplication in 2.052 seconds (JVM running for 2.917)
+10:50:02.427 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+10:50:02.436 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+10:50:06.211 [main] INFO  c.c.l.s.SpringLmsApiApplication - Starting SpringLmsApiApplication using Java 11.0.19 on DESKTOP-C6PE7LG with PID 4784 (E:\Internship\LMS_PROJECT\spring-lms-api\target\classes started by CHAMITH in E:\Internship\LMS_PROJECT\spring-lms-api)
+10:50:06.213 [main] INFO  c.c.l.s.SpringLmsApiApplication - No active profile set, falling back to default profiles: default
+10:50:07.002 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8083 (http)
+10:50:07.007 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8083"]
+10:50:07.007 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+10:50:07.007 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.46]
+10:50:07.059 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+10:50:07.060 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 816 ms
+10:50:07.361 [main] INFO  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 349fb283-75d8-403f-98d9-a436d9697d10
+
+10:50:07.400 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@26994c6a, org.springframework.security.web.context.SecurityContextPersistenceFilter@5e24592e, org.springframework.security.web.header.HeaderWriterFilter@2037f12b, org.springframework.security.web.authentication.logout.LogoutFilter@2499b971, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@50ff7063, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@619c3546, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3cd46491, org.springframework.security.web.session.SessionManagementFilter@3ac0a14b, org.springframework.security.web.access.ExceptionTranslationFilter@4e7bc939, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2a2b7a35]
+10:50:07.414 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+10:50:07.517 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+10:50:07.679 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+10:50:07.717 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8083"]
+10:50:07.730 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8083 (http) with context path ''
+10:50:07.731 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+10:50:07.739 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+10:50:07.758 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+10:50:07.902 [main] INFO  c.c.l.s.SpringLmsApiApplication - Started SpringLmsApiApplication in 1.88 seconds (JVM running for 2.75)
+10:50:56.986 [http-nio-8083-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:50:56.987 [http-nio-8083-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+10:50:56.988 [http-nio-8083-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+10:50:57.174 [http-nio-8083-exec-1] INFO  c.c.l.s.service.impl.AuthServiceImpl - User successfully Sign IN admin2@gmail.com
+13:13:30.684 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2h22m25s247ms596µs900ns).
