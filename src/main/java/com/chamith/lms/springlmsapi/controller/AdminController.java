@@ -25,10 +25,10 @@ public class AdminController {
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @PatchMapping("/update_privilege/{email}")
-    public ResponseEntity<StandardResponse> updatePrivilege(@RequestHeader("AuthenticationHeader") String accessToken) {
+    public ResponseEntity<StandardResponse> updatePrivilege(@RequestHeader("AuthenticationHeader") String accessToken ,
+                                                            @PathVariable("email") final String email ) {
         AuthenticationVerification authenticationVerification = generateJWT.validateToken(accessToken);
         if (authenticationVerification.isAuthenticationStatus()) {
-            String email = generateJWT.extractSubject(accessToken) ;
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
                 return adminService.updatePrivilege(email);
             } else {
@@ -53,10 +53,11 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete_user/{email}")
-    public ResponseEntity<StandardResponse> removeUser(@RequestHeader("AuthenticationHeader") String accessToken ) {
+    public ResponseEntity<StandardResponse> removeUser(@RequestHeader("AuthenticationHeader") String accessToken,
+                                                       @PathVariable("email") final String email
+    ) {
         AuthenticationVerification authenticationVerification = generateJWT.validateToken(accessToken);
         if (authenticationVerification.isAuthenticationStatus()) {
-            String email = generateJWT.extractSubject(accessToken) ;
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
                 return adminService.deleteUser(email);
             } else {
