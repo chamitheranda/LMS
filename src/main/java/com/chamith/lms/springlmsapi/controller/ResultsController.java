@@ -1,7 +1,6 @@
 package com.chamith.lms.springlmsapi.controller;
 
 import com.chamith.lms.springlmsapi.dto.requestDTO.ResultsRequestDTO;
-import com.chamith.lms.springlmsapi.service.AuthService;
 import com.chamith.lms.springlmsapi.service.ResultService;
 import com.chamith.lms.springlmsapi.util.AuthenticationVerification;
 import com.chamith.lms.springlmsapi.util.GenerateJWT;
@@ -25,12 +24,12 @@ public class ResultsController {
 
     private static final Logger logger = LoggerFactory.getLogger(ResultsController.class);
 
-    @PostMapping("/add_results")
+    @PostMapping("/add_results/{email}")
     public ResponseEntity<StandardResponse> addResults(@RequestHeader("AuthenticationHeader") String accessToken ,
-                                                      @RequestBody ResultsRequestDTO resultsRequestDTO) {
+                                                       @RequestBody ResultsRequestDTO resultsRequestDTO,
+                                                       @PathVariable("email") final String email ){
         AuthenticationVerification authenticationVerification = generateJWT.validateToken(accessToken);
         if (authenticationVerification.isAuthenticationStatus()) {
-            String email = generateJWT.extractSubject(accessToken);
             if (authenticationVerification.getPrivilegeLevel().equals("admin")) {
                 return resultService.addResult(resultsRequestDTO, email);
             } else {
